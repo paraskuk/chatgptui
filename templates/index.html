@@ -2,12 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Ask GPT-4</title>
+    <title>Simple Web App to query Chat GPT any question you like</title>
        <!-- Load Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
   </head>
+<style>
+ body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+    </style>
   <body>
-    <h1>Ask GPT-4</h1>
+  <div class="container">
+    <h1>Simple Web App to query Chat GPT any question you like</h1>
 <form>
   <label for="question">Enter your question:</label><br>
   <input type="text" id="question" name="user_input"><br>
@@ -17,6 +34,7 @@
 
 <br>
 <div id="answer">Answer will be shown here</div>
+      </div>
   </body>
   <script>
    async function sendRequest() {

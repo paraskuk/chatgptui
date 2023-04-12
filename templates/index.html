@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ask GPT-4</title>
+       <!-- Load Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <h1>Ask GPT-4</h1>
+<form>
+  <label for="question">Enter your question:</label><br>
+  <input type="text" id="question" name="user_input"><br>
+  <br>
+  <button type="button" onclick="sendRequest()">Submit</button>
+</form>
+
+<br>
+<div id="answer">Answer will be shown here</div>
+  </body>
+  <script>
+   async function sendRequest() {
+  const question = document.getElementsByName("user_input")[0].value;
+  const response = await fetch('/ask_gpt4/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_input: question })
+  });
+  const data = await response.json();
+
+  if (response.status === 200) {
+    if ("response" in data) {
+      const answerBox = document.createElement("code");
+      answerBox.style.display = "block";
+      answerBox.style.backgroundColor = "lightgreen";
+      answerBox.style.padding = "10px";
+      answerBox.innerHTML = data.response.replace(/\n/g, "<br>");
+      const answerElement = document.getElementById("answer");
+      while (answerElement.firstChild) {
+        answerElement.removeChild(answerElement.firstChild);
+      }
+      answerElement.appendChild(answerBox);
+    } else if ("error" in data) {
+      document.getElementById("answer").innerHTML = `Error: ${data.error}`;
+    } else {
+      document.getElementById("answer").innerHTML = "Unknown error.";
+    }
+  } else {
+    document.getElementById("answer").innerHTML = "Server error.";
+  }
+}</script>
+</html>

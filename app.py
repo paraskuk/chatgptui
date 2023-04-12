@@ -1,11 +1,7 @@
 import openai
 import os
-
-from starlette.staticfiles import StaticFiles
-
 from models.query_model import QueryModel
 from typing import Optional
-
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles

@@ -10,7 +10,6 @@ app = FastAPI()
 
 openai.api_key = os.getenv("OPEN_AI_KEY")
 
-
 templates = Jinja2Templates(directory="templates")
 app.mount("/templates", StaticFiles(directory="templates"), name="templates")
 

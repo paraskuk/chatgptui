@@ -23,6 +23,8 @@ async def index(request: Request):
 async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinci-003"):
     try:
         # Call the OpenAI API
+        # The model used is not gpt4 to use gpt4 as a model a different API has to be used and
+        # in specific the openai.ChatCompletion.create(.....)
         response = openai.Completion.create(
                     engine=model,
                     prompt=query_params.user_input,
@@ -31,8 +33,6 @@ async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinc
                     stop=None,
                     temperature=0.5,
                 )
-
-
         # response = openai.ChatCompletion.create(
         #     model=model,
         #     messages=[{"role": "system", "content": "You are a helpful assistant."},

@@ -24,13 +24,24 @@ async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinc
     try:
         # Call the OpenAI API
         response = openai.Completion.create(
-            engine=model,
-            prompt=query_params.user_input,
-            max_tokens=1000,
-            n=1,
-            stop=None,
-            temperature=0.5,
-        )
+                    engine=model,
+                    prompt=query_params.user_input,
+                    max_tokens=1000,
+                    n=1,
+                    stop=None,
+                    temperature=0.5,
+                )
+
+
+        # response = openai.ChatCompletion.create(
+        #     model=model,
+        #     messages=[{"role": "system", "content": "You are a helpful assistant."},
+        #         {"role": "user", "content": query_params.user_input}],
+        #     max_tokens=1000,
+        #     n=1,
+        #     stop=None,
+        #     temperature=0.5,
+        # )
 
         if len(response.choices) > 0 and hasattr(response.choices[0], "text"):
             answer = response.choices[0].text.strip()
@@ -43,3 +54,28 @@ async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinc
 
     except Exception as e:
         return {"error": str(e)}
+
+# @app.post("/ask_gpt4/")
+# async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinci-003"):
+#     try:
+#         # Call the OpenAI API
+#         response = openai.Completion.create(
+#             engine=model,
+#             prompt=query_params.user_input,
+#             max_tokens=1000,
+#             n=1,
+#             stop=None,
+#             temperature=0.5,
+#         )
+#
+#         if len(response.choices) > 0 and hasattr(response.choices[0], "text"):
+#             answer = response.choices[0].text.strip()
+#             return {"response": answer}
+#         else:
+#             return {"error": "ChatGPT response does not contain text attribute."}
+#
+#     except Exception as e:
+#         return {"error": str(e)}
+#
+#     except Exception as e:
+#         return {"error": str(e)}

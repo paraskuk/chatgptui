@@ -19,7 +19,7 @@ AskGPT is a simple web application that uses the OpenAI API to generate response
 
 1. Run the application using the command `uvicorn main:app --reload`.
 2. Navigate to `http://localhost:8000/` on your browser to access the application.
-3. Enter your query in the input field and click on the `Ask` button to generate a response.
+3. Enter your query in the input field and click on the `Submit` button to generate a response.
 
 ## Note
 

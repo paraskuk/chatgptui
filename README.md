@@ -1,6 +1,6 @@
 # AskGPT
 
-AskGPT4 is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-3 language model. This application is built using FastAPI and Jinja2Templates for the frontend.
+AskGPT is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-3 language model. This application is built using FastAPI and Jinja2Templates for the frontend.
 
 ## Requirements
 

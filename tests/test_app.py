@@ -4,7 +4,7 @@ from app import ask_gpt4, app
 
 client = TestClient(app)
 
-@pytest.mark.asyncio
+
 @pytest.mark.parametrize("query_params, model, expected_output", [
     (
         {"user_input": "What is the capital of France?Please answer with one word only"},

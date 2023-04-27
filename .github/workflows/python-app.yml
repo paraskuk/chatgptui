@@ -38,7 +38,7 @@ jobs:
         python -m pytest
     - name : Test with pytest Code Coverage
       run: |
-        python -m pytest --cov=app
+        python -m pytest --cov=OpenAI
     - name : Pip audit check
       run: |
         pip-audit

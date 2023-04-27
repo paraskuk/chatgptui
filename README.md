@@ -6,7 +6,7 @@ AskGPT is a simple web application that uses the OpenAI API to generate response
 
 ## Requirements
 
-- Python 3.7 or higher
+- Python 3.11 or higher
 - openai
 - FastAPI
 - Jinja2Templates

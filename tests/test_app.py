@@ -4,7 +4,7 @@ from app import ask_gpt4, app
 
 client = TestClient(app)
 
-
+@pytest.mark.asyncio
 @pytest.mark.parametrize("query_params, model, expected_output", [
     (
         {"user_input": "What is the capital of France?Please answer with one word only"},
@@ -18,7 +18,7 @@ client = TestClient(app)
     ),
     # Add more test cases here
 ])
-def test_ask_gpt4(query_params, model, expected_output):
+async def test_ask_gpt4(query_params, model, expected_output):
     response = client.post(
         "/ask_gpt4/",
         json={"user_input": query_params["user_input"], "model": model},

@@ -1,7 +1,7 @@
 import openai
 import os
 
-from exceptions.ask_gpt4_exception import GPTException
+from exceptions.GPTException import GPTException
 from models.query_model import QueryModel
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException

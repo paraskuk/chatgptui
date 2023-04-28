@@ -13,10 +13,13 @@ WORKDIR OpenAI
 # Create volume directory
 RUN mkdir -p /docker/data
 
-ENV PYTHONDONTWRITEBYTECODE 1
 
+# Python should not write bytecode files (.pyc files) to disk.
+ENV PYTHONDONTWRITEBYTECODE 1
+# Disables buffering, allowing the output to be immediately displayed as it is generated.
 ENV PYTHONUNBUFFERED 1
 
+# Installs Nano and Curl
 RUN apt-get update \
     && apt-get install -y curl \
     && apt-get -y install  nano \

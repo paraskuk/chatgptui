@@ -42,3 +42,6 @@ Thumbs.db
 *.pyo
 *.orig
 *.rej
+
+# pytest
+.pytest_cache

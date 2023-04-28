@@ -2,23 +2,22 @@ import openai
 import os
 from models.query_model import QueryModel
 from typing import Optional
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+import logging
 
 app = FastAPI()
 
+# logging
+log = logging.getLogger("uvicorn")
 openai.api_key = os.getenv("OPEN_AI_KEY")
 
 templates_directory = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=templates_directory)
 app.mount("/templates", StaticFiles(directory=templates_directory), name="templates")
-
-
-# templates = Jinja2Templates(directory="templates")
-# app.mount("/templates", StaticFiles(directory="templates"), name="templates")
 
 
 @app.get("/")
@@ -28,11 +27,15 @@ async def index(request: Request):
     :param request:
     :return: HTML template
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    try:
+        return templates.TemplateResponse("index.html", {"request": request})
+    except HTTPException as exc:
+        log.exception("An HTTPException occurred: %s", exc.detail)
+        return http_exception_handler(exc)
 
 
 @app.post("/ask_gpt4/")
-async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinci-003") -> JSONResponse:
+async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinci-003") -> dict:
     """
     Post Route receive a query and return a response with OpenAIAPI for chat GPT
     :param query_params: User input in the form of questions to chat GPT
@@ -61,5 +64,16 @@ async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinc
     except Exception as e:
         return {"error": str(e)}
 
-    except Exception as e:
-        return {"error": str(e)}
+    # Exception handling
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(exc: HTTPException) -> dict:
+    """
+        Function for exception handling.
+        :param exc: the relevant exception raised
+        :return: dictionary, key , value a pair of status code and error detail.
+        """
+
+    log.debug("Calling http_exception_handler")
+    return {"detail": exc.detail, "status_code": exc.status_code}

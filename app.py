@@ -1,5 +1,7 @@
 import openai
 import os
+
+from exceptions.ask_gpt4_exception import GPTException
 from models.query_model import QueryModel
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException
@@ -59,10 +61,21 @@ async def ask_gpt4(query_params: QueryModel, model: Optional[str] = "text-davinc
             answer = response.choices[0].text.strip()
             return {"response": answer}
         else:
-            return {"error": "ChatGPT response does not contain text attribute."}
+            error_msg = "ChatGPT response does not contain text attribute."
+            log.error(error_msg)
+            raise GPTException(error_msg)
 
+            # return {"error": "ChatGPT response does not contain text attribute."}
+    except GPTException as e:
+        raise e
     except Exception as e:
-        return {"error": str(e)}
+        log.error(f"Exception occurred: {str(e)}")
+        if not query_params.user_input:  # Empty user_input case
+            raise GPTException("Empty user_input", status_code=400)
+        else:
+            raise GPTException(str(e))
+    # except Exception as e:
+    #     return {"error": str(e)}
 
     # Exception handling
 
@@ -77,3 +90,11 @@ async def http_exception_handler(exc: HTTPException) -> dict:
 
     log.debug("Calling http_exception_handler")
     return {"detail": exc.detail, "status_code": exc.status_code}
+
+
+@app.exception_handler(GPTException)
+async def gpt_exception_handler(request: Request, exc: GPTException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": str(exc)},
+    )

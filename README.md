@@ -2,14 +2,15 @@
 
 # AskGPT
 
-AskGPT is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-3 language model. This application is built using FastAPI and Jinja2Templates for the frontend.
+AskGPT is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-3 language model. This application is built using FastAPI, JS,HTML and CSS for the frontend.
 
 ## Requirements
 
 - Python 3.11 or higher
 - openai
 - FastAPI
-- Jinja2Templates
+- JS
+- HTML, CSS
 
 ## Installation
 

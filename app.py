@@ -11,7 +11,6 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import logging
 
-
 app = FastAPI()
 
 # logging

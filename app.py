@@ -1,3 +1,4 @@
+
 import openai
 import os
 
@@ -98,3 +99,5 @@ async def gpt_exception_handler(request: Request, exc: GPTException):
         status_code=exc.status_code,
         content={"error": str(exc)},
     )
+
+

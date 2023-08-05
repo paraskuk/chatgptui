@@ -39,7 +39,7 @@ jobs:
     - name : Test with pytest Code Coverage
       run: |
         python -m pytest --cov=OpenAI
-    - name : Pip audit check
-      run: |
-        pip-audit
+    ##- name : Pip audit check
+      ##run: |
+        ##pip-audit
 

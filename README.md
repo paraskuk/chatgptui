@@ -1,5 +1,4 @@
 [![Python application Setup - Chat GPT](https://github.com/paraskuk/chatgptui/actions/workflows/python-app.yml/badge.svg)](https://github.com/paraskuk/chatgptui/actions/workflows/python-app.yml)
-
 # AskGPT
 
 AskGPT is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-3 language model. 

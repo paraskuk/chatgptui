@@ -1,0 +1,24 @@
+/* style.css */
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.indent {
+    display: inline-block;
+    width: 1em;
+}
+
+
+

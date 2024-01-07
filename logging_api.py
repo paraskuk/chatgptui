@@ -26,7 +26,7 @@ class LoggerConfiguration:
             logging.root.removeHandler(handler)
 
         # Create and set file handler with 'write' mode
-        file_handler = logging.FileHandler(log_file_path, mode='w')
+        file_handler = logging.FileHandler(log_file_path, mode='w+')
         file_handler.setLevel(level)
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
         file_handler.setFormatter(formatter)

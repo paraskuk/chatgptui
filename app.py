@@ -21,6 +21,7 @@ LoggerConfiguration.close_loggers()
 logger_config = LoggerConfiguration("askgpt.log", logging.DEBUG)
 log = logger_config.get_logger()
 
+# Set up the templates directory for HTML templates
 templates_directory = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=templates_directory)
 app.mount("/templates", StaticFiles(directory=templates_directory), name="templates")
@@ -54,7 +55,7 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
         response = client.chat.completions.create(
             model=query_params.model,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "system", "content": "You are a helpful assistant for coding completions in Python using version of at least 3.11."},
                 {"role": "user", "content": query_params.user_input}
             ]
         )

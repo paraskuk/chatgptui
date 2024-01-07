@@ -45,6 +45,7 @@ async function sendRequest() {
 }
 
 function applyPEP8Indentation(code) {
+    code = code.replace(/```python\n/g, '').replace(/```/g, '');
     // Split the code into lines
     const lines = code.split('\n');
 

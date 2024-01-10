@@ -40,6 +40,74 @@ async def index(request: Request):
         log.exception("An HTTPException occurred: %s", exc.detail)
         return http_exception_handler(exc)
 
+
+# def create_gpt4_completion(model, system_message, user_input):
+#     """
+#     Helper function to create a GPT-4 completion request.
+#     """
+#     try:
+#         response = client.chat.completions.create(
+#             model=model,
+#             messages=[
+#                 {"role": "system", "content": system_message},
+#                 {"role": "user", "content": user_input}
+#             ]
+#         )
+#
+#         if response.choices and len(response.choices) > 0 and response.choices[0].message:
+#             return response.choices[0].message.content
+#         else:
+#             return None
+#
+#     except Exception as e:
+#         log.error(f"Error in GPT-4 completion request: {e}")
+#         return None
+#
+#
+# @app.post("/ask_gpt4/")
+# async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
+#     """
+#     Endpoint to receive a query and return a response using OpenAI's Chat Completions API
+#     """
+#     try:
+#         # Code completion
+#         code_completion = create_gpt4_completion(
+#             query_params.model,
+#             "You are a helpful assistant.",
+#             query_params.user_input
+#         )
+#
+#         # User level estimation
+#         user_level_estimation = create_gpt4_completion(
+#             query_params.model,
+#             "Please evaluate and categorize the user's programming expertise level based on their previous query. Is the user a beginner, intermediate, or advanced programmer?",
+#             query_params.user_input
+#         )
+#
+#         # Sentiment analysis
+#         sentiment_estimation = create_gpt4_completion(
+#             query_params.model,
+#             "Analyze the sentiment of the user's previous query. Is the sentiment positive, negative, or neutral?",
+#             query_params.user_input
+#         )
+#
+#         if not code_completion:
+#             raise HTTPException(status_code=500, detail="No response from the model for code completion.")
+#
+#         # Formatting the final response
+#         final_response = code_completion
+#         if user_level_estimation:
+#             final_response += "\n\nUser Level Estimation: " + user_level_estimation
+#         if sentiment_estimation:
+#             final_response += "\n\nSentiment Analysis: " + sentiment_estimation
+#
+#         return JSONResponse(content={"response": final_response})
+#
+#     except Exception as e:
+#         log.error(f"Exception occurred: {str(e)}")
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/ask_gpt4/")
 async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
     """
@@ -56,6 +124,9 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
                 {"role": "user", "content": query_params.user_input}
             ]
         )
+
+        moderation_result = client.moderations.create(
+                    input=query_params.user_input)
 
         # Check if the completion response is valid
         if not completion_response.choices or len(completion_response.choices) == 0 or not completion_response.choices[
@@ -104,10 +175,10 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
                         "\n\nSentiment Analysis: " + sentiment_estimation
         })
 
-        # Return the code completion response and user level estimation
-        return JSONResponse(content={
-            "response": code_completion + "\n\nUser Level Estimation: " + user_level_estimation
-        })
+        # # Return the code completion response and user level estimation
+        # return JSONResponse(content={
+        #     "response": code_completion + "\n\nUser Level Estimation: " + user_level_estimation
+        # })
 
     except Exception as e:
         log.error(f"Exception occurred: {str(e)}")

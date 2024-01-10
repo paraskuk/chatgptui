@@ -71,7 +71,9 @@ def create_gpt4_completion(model: str, system_message: str, user_input: str) -> 
 @app.post("/ask_gpt4/")
 async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
     """
-    Endpoint to receive a query and return a response using OpenAI's Chat Completions API
+    Function to receive a query and return a response using OpenAI's Chat Completions API
+    :param query_params: QueryModel object containing the user input and model type
+    :return: JSONResponse object containing the response
     """
     try:
         # Code completion

@@ -79,10 +79,6 @@ function escapeHTML(html) {
 document.getElementById('thumbs-down').addEventListener('click', () => sendRating('down'));*/
 
 
-
-
-
-
 /*async function sendRequest() {
   const question = document.getElementsByName("user_input")[0].value;
   const response = await fetch('/ask_gpt4/', {
@@ -128,10 +124,11 @@ async function sendRequest() {
 
     if (response.status === 200) {
         if ("response" in data) {
+
             const answerElement = document.getElementById("answer");
             answerElement.innerHTML = ''; // Clear previous content
 
-            // Apply PEP8 indentation to the GPT-3 response code
+            // Apply PEP8 indentation to the GPT-4 response code
             const formattedCode = applyPEP8Indentation(data.response);
 
             // Create the code block with formatted code
@@ -166,31 +163,30 @@ async function sendRequest() {
     }
 }
 
-      function applyPEP8Indentation(code) {
+function applyPEP8Indentation(code) {
 
-          code = code.replace(/```python\n/g, '').replace(/```/g, '');
-          // Split the code into lines
-          const lines = code.split('\n');
+    code = code.replace(/```python\n/g, '').replace(/```/g, '');
+    // Split the code into lines
+    const lines = code.split('\n');
 
-          // Apply indentation rules
-          return lines.map(line => {
-              // Count the leading spaces (assuming 4 spaces per indentation level for PEP 8)
-              const indentLevel = line.search(/\S|$/) / 4;
+    // Apply indentation rules
+    return lines.map(line => {
+        // Count the leading spaces (assuming 4 spaces per indentation level for PEP 8)
+        const indentLevel = line.search(/\S|$/) / 4;
 
-              // Replace every 4 spaces with a specific amount of padding
-              let indent = '';
-              for (let i = 0; i < indentLevel; i++) {
-                  indent += '<span class="indent">&nbsp;</span>';
-              }
+        // Replace every 4 spaces with a specific amount of padding
+        let indent = '';
+        for (let i = 0; i < indentLevel; i++) {
+            indent += '<span class="indent">&nbsp;</span>';
+        }
 
-              // Remove the leading spaces and replace them with the indentation span
-              return indent + line.trimStart();
-          }).join('\n');
-      }
+        // Remove the leading spaces and replace them with the indentation span
+        return indent + line.trimStart();
+    }).join('\n');
+}
 
 document.getElementById('thumbs-up').addEventListener('click', () => sendRating('up'));
 document.getElementById('thumbs-down').addEventListener('click', () => sendRating('down'));
-
 
 
 function sendRating(rating) {
@@ -202,23 +198,23 @@ function sendRating(rating) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ responseId: responseId, feedback: rating })
+        body: JSON.stringify({responseId: responseId, feedback: rating})
     })
-    .then(response => {
-        if(response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Network response was not ok.');
-        }
-    })
-    .then(data => {
-        feedbackElement.innerHTML = `Feedback sent successfully: ${rating}`;
-        feedbackElement.style.display = 'block';
-    })
-    .catch(error => {
-        feedbackElement.innerHTML = `Error sending feedback: ${error}`;
-        feedbackElement.style.display = 'block';
-    });
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        })
+        .then(data => {
+            feedbackElement.innerHTML = `Feedback sent successfully: ${rating}`;
+            feedbackElement.style.display = 'block';
+        })
+        .catch(error => {
+            feedbackElement.innerHTML = `Error sending feedback: ${error}`;
+            feedbackElement.style.display = 'block';
+        });
 }
 
 function getCurrentResponseId() {
@@ -227,7 +223,7 @@ function getCurrentResponseId() {
 
 
 // DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Attach event listener to the submit button
     const submitButton = document.getElementById('submit-button');
     if (submitButton) {

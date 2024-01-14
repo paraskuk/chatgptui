@@ -47,3 +47,5 @@ Thumbs.db
 .pytest_cache
 /cert.pem
 /newkey.pem
+/askgpt.log
+/api_routes_utilities/routes_utilities.py

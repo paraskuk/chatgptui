@@ -83,6 +83,110 @@ router = APIRouter()
 
 
 #########################GITHUB ROUTES#######################################
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session), ex=3600)
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     try:
+#         # Generate the authorization URL for GitHub OAuth
+#         redirect_uri = str(request.url_for('authorize'))  # Convert URL object to string
+#         auth_url, _ = await oauth.github.create_authorization_url(redirect_uri, state=state)
+#         log.debug(f"Auth URL: {auth_url}")
+#     except Exception as e:
+#         log.error(f"Error generating authorization URL: {e}")
+#         return RedirectResponse(url='/login-error?message=Error generating authorization URL')
+#
+#     # Set the session ID cookie in the response and redirect to GitHub for authentication
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=3600)
+#     log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#
+#     return response
+
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     try:
+#         # Generate the redirect URI
+#         redirect_uri = str(request.url_for('authorize'))
+#         log.debug(f"Generated Redirect URI: {redirect_uri}")
+#
+#         # Create the authorization URL
+#         auth_url, state = await oauth.github.create_authorization_url(redirect_uri, state=state)
+#         log.debug(f"Auth URL: {auth_url}, State: {state}")
+#     except Exception as e:
+#         log.error(f"Error generating authorization URL: {e}")
+#         return RedirectResponse(url='/login-error?message=Error generating authorization URL')
+#
+#     # Set the session ID cookie in the response and redirect to GitHub for authentication
+#     session_id = secrets.token_urlsafe()
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=3600)
+#     log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#
+#     return response
+#
+#
+#
+# @app.route('/auth/github/callback', name='authorize')
+# async def authorize(request: Request):
+#     log.debug("Starting authorization process.")
+#     session_id = request.cookies.get('session_id')
+#     log.debug(f"Callback received with session_id: {session_id}")
+#
+#     if not session_id:
+#         log.error("Session ID is None. Possible cookie issue.")
+#         return RedirectResponse(url='/login-error?message=Session ID not found')
+#
+#     session_data_json = redis_client.get(session_id)
+#     if not session_data_json:
+#         log.error("Session data not found in Redis.")
+#         return RedirectResponse(url='/login-error?message=Session data not found')
+#
+#     request.state.session = json.loads(session_data_json)
+#     log.debug(f"Retrieved session data from Redis: {session_data_json}")
+#
+#     session_state = request.state.session.get('oauth_state')
+#     callback_state = request.query_params.get('state')
+#     log.debug(f"Session State: {session_state}, Callback State: {callback_state}")
+#
+#     if session_state != callback_state:
+#         log.error("State mismatch error.")
+#         return RedirectResponse(url='/login-error?message=State mismatch')
+#
+#     try:
+#         token = await oauth.github.authorize_access_token(request)
+#         request.state.session['auth_token'] = token['access_token']
+#         redis_client.set(session_id, json.dumps(request.state.session), ex=3600)
+#         log.debug("Authorization successful, redirecting to authenticated page.")
+#         return RedirectResponse(url='/authenticated')
+#     except Exception as e:
+#         log.error(f"Error during authorization: {e}")
+#         return RedirectResponse(url='/login-error?message=Authorization failure')
+
+
 @app.get("/login/github")
 async def login_via_github(request: Request):
     if 'auth_token' in request.state.session:
@@ -152,7 +256,6 @@ async def authorize(request: Request):
         log.error(f"Error during authorization: {e}")
         return RedirectResponse(url='/login-error?message=Authorization failure')
 
-
 @app.get("/login-error")
 async def login_error(request: Request, message: str):
     # Display an error message or render a template with the error
@@ -162,6 +265,7 @@ async def login_error(request: Request, message: str):
 @app.get("/logout")
 async def logout(request: Request):
     # Clear Redis session data
+    log.debug("Performing logout.")
     session_id = request.cookies.get('session_id')
     if session_id:
         redis_client.delete(session_id)
@@ -171,6 +275,11 @@ async def logout(request: Request):
 
     # Redirect to the home page or login page after logout
     return RedirectResponse(url='/')
+
+@app.get("/authenticated")
+async def authenticated(request: Request):
+    # Implement the logic for authenticated users
+    return JSONResponse({'message': 'Successfully authenticated with GitHub'})
 
 
 def create_or_update_github_file(file: GitHubFile):

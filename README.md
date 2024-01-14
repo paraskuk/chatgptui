@@ -8,7 +8,8 @@ This application is built using FastAPI for the API and JS,HTML and CSS for the 
 - Python 3.11 or higher
 - openai
 - FastAPI
-- JS
+- JavaScript
+- Redis
 - HTML, CSS
 
 ## Installation

@@ -85,36 +85,32 @@ router = APIRouter()
 #########################GITHUB ROUTES#######################################
 @app.get("/login/github")
 async def login_via_github(request: Request):
-    # Check if the user is already authenticated
     if 'auth_token' in request.state.session:
         log.debug("User already authenticated, redirecting to home.")
         return RedirectResponse(url='/')
 
-    # Generate the OAuth state
     state = secrets.token_urlsafe(32)
     request.state.session['oauth_state'] = state
     log.debug(f"Generated OAuth state: {state}")
 
-    # Retrieve or create a new session ID
     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
-    redis_client.set(session_id, json.dumps(request.state.session), ex=3600)  # Set expiry to match cookie
+    redis_client.set(session_id, json.dumps(request.state.session), ex=3600)
     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
 
-    # Generate the authorization URL for GitHub OAuth
     try:
-        auth_url, state = await oauth.github.create_authorization_url(redirect_uri=request.url_for('authorize'),
-                                                                      state=state)
-        # Set the session ID cookie in the response
-        response = RedirectResponse(url=auth_url)
-        response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=3600)
-        log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
-        return response
+        redirect_uri = request.url_for('authorize')
+        auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
     except Exception as e:
         log.error(f"Error generating authorization URL: {e}")
-        raise HTTPException(status_code=500, detail="Error generating authorization URL")
+        return RedirectResponse(url='/login-error?message=Error generating authorization URL')
 
+    response = RedirectResponse(url=auth_url)
+    response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=3600)
+    log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
 
-@app.route('/auth/github/callback', name='authorize')
+    return response
+
+@app.route('/auth/github/callback', methods=['GET'], name='authorize')
 async def authorize(request: Request):
     # Retrieve the session ID from the cookie
     session_id = request.cookies.get('session_id')

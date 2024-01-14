@@ -15,7 +15,7 @@
     });</script>
 
 </head>
-<style>
+<!--?<style>
     body {
         display: flex;
 
@@ -31,7 +31,7 @@
         overflow-y: auto;
         padding: 1rem;
     }
-</style>
+</style>-->
 <body>
 <div class="container">
     <h1>Code Completion App using GPT-4</h1>
@@ -55,8 +55,19 @@
 </div>
 
 <div id="feedback" style="display:none;"></div>
+<!-- Login button for GitHub -->
+<button id="login-github-btn">Login with GitHub</button>
+<!-- Logout button for GitHub -->
+<button id="logout-github-btn">Logout from GitHub</button>
+<!-- Message to show if authenticated with GitHub -->
+<div id="authenticated-message" style="display: none;">
+    You have successfully authenticated to GitHub.
+</div>
+
 
 </body>
+<!--?This leverages the JS code on the index.js file -->
+
 <script src="/templates/index.js"></script>
 
 </html>

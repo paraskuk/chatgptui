@@ -1,18 +1,56 @@
 import openai
 import os
+from starlette.responses import Response
 from openai import OpenAI
 from exceptions.GPTException import GPTException
 from logging_api import *
-from models.query_model import QueryModel, FeedbackModel
+from models.query_model import QueryModel, FeedbackModel, GitHubFile, redis_client
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+from authlib.integrations.starlette_client import OAuth
+from starlette.responses import RedirectResponse
+from models.query_model import RedisSessionMiddleware
+import secrets
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
+import requests
+import base64
+from fastapi import FastAPI, Request, HTTPException
+from authlib.integrations.starlette_client import OAuth
+from starlette.responses import RedirectResponse
+from starlette.middleware.sessions import SessionMiddleware
+from authlib.integrations.starlette_client import OAuth
+import redis
+from starlette.requests import Request
+import uuid
+import json
+
+#######################end of imports#######################################
+
+#####Object Instantiation##################################################
+
 
 # instantiate FastAPI
 app = FastAPI()
+secret_session_key = os.getenv("SECRET_SESSION_KEY")
+# this is the old middleware solution with secret key from github
+
+# First, add the Redis middleware
+app.add_middleware(RedisSessionMiddleware)
+
+# Then, add Starlette's SessionMiddleware
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_SESSION_KEY"))
+
+##app.add_middleware(RedisSessionMiddleware)
+
+# Connect to Redis server
+# redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+
+
 # instantiate OpenAI
 client = OpenAI(api_key=os.getenv("OPEN_AI_KEY"))
 
@@ -26,7 +64,145 @@ templates_directory = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=templates_directory)
 app.mount("/templates", StaticFiles(directory=templates_directory), name="templates")
 
+##################################GITHUB AUTHENTICATION#######################
+oauth = OAuth()
+oauth.register(
+    name='github',
+    client_id=os.getenv("GITHUB_CLIENT_ID"),
+    client_secret=os.getenv("GITHUB_CLIENT_SECRET"),
+    access_token_url='https://github.com/login/oauth/access_token',
+    authorize_url='https://github.com/login/oauth/authorize',
+    api_base_url='https://api.github.com/',
+    client_kwargs={'scope': 'repo'},
+)
 
+router = APIRouter()
+
+
+#########################GITHUB ROUTES#######################################
+
+
+#########################GITHUB ROUTES#######################################
+@app.get("/login/github")
+async def login_via_github(request: Request):
+    # Check if the user is already authenticated
+    if 'auth_token' in request.state.session:
+        log.debug("User already authenticated, redirecting to home.")
+        return RedirectResponse(url='/')
+
+    # Generate the OAuth state
+    state = secrets.token_urlsafe(32)
+    request.state.session['oauth_state'] = state
+    log.debug(f"Generated OAuth state: {state}")
+
+    # Retrieve or create a new session ID
+    session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+    redis_client.set(session_id, json.dumps(request.state.session), ex=3600)  # Set expiry to match cookie
+    log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+
+    # Generate the authorization URL for GitHub OAuth
+    try:
+        auth_url, state = await oauth.github.create_authorization_url(redirect_uri=request.url_for('authorize'),
+                                                                      state=state)
+        # Set the session ID cookie in the response
+        response = RedirectResponse(url=auth_url)
+        response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=3600)
+        log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+        return response
+    except Exception as e:
+        log.error(f"Error generating authorization URL: {e}")
+        raise HTTPException(status_code=500, detail="Error generating authorization URL")
+
+
+@app.route('/auth/github/callback', name='authorize')
+async def authorize(request: Request):
+    # Retrieve the session ID from the cookie
+    session_id = request.cookies.get('session_id')
+    log.debug(f"Callback received with session_id: {session_id}")
+
+    if not session_id:
+        log.error("Session ID is None. Possible cookie issue.")
+        return RedirectResponse(url='/login-error?message=Session ID not found')
+
+    # Retrieve the session data from Redis
+    session_data_json = redis_client.get(session_id)
+    if not session_data_json:
+        log.error("Session data not found in Redis.")
+        return RedirectResponse(url='/login-error?message=Session data not found')
+
+    request.state.session = json.loads(session_data_json)
+    log.debug(f"Retrieved session data from Redis: {session_data_json}")
+
+    # Compare the OAuth state
+    session_state = request.state.session.get('oauth_state')
+    callback_state = request.query_params.get('state')
+    log.debug(f"Session State: {session_state}, Callback State: {callback_state}")
+
+    if session_state != callback_state:
+        log.error("State mismatch error.")
+        return RedirectResponse(url='/login-error?message=State mismatch')
+
+    try:
+        # Exchange the code for a token
+        token = await oauth.github.authorize_access_token(request)
+        request.state.session['auth_token'] = token['access_token']
+
+        # Update the session data in Redis
+        redis_client.set(session_id, json.dumps(request.state.session), ex=3600)
+
+        log.debug("Authorization successful, redirecting to authenticated page.")
+        return RedirectResponse(url='/authenticated')
+    except Exception as e:
+        log.error(f"Error during authorization: {e}")
+        return RedirectResponse(url='/login-error?message=Authorization failure')
+
+
+@app.get("/login-error")
+async def login_error(request: Request, message: str):
+    # Display an error message or render a template with the error
+    return JSONResponse(content={"error": message}, status_code=400)
+
+
+@app.get("/logout")
+async def logout(request: Request):
+    # Clear Redis session data
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        redis_client.delete(session_id)
+
+    # Clear default session data
+    request.session.clear()
+
+    # Redirect to the home page or login page after logout
+    return RedirectResponse(url='/')
+
+
+def create_or_update_github_file(file: GitHubFile):
+    url = f"https://api.github.com/repos/{file.repository}/contents/{file.filename}"
+    data = {
+        "message": f"Update {file.filename}",
+        "content": base64.b64encode(file.content.encode()).decode("utf-8")
+    }
+    headers = {
+        "Authorization": f"token {file.token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    response = requests.put(url, json=data, headers=headers)
+    if response.status_code not in [200, 201]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response.json())
+    return response.json()
+
+
+@router.post("/save-to-github")
+async def save_to_github(file: GitHubFile):
+    return create_or_update_github_file(file)
+
+
+# Add this router to your FastAPI app
+app.include_router(router)
+
+
+######################################## Standard Routes for UI #############
 @app.get("/")
 async def index(request: Request):
     """

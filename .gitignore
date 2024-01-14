@@ -45,3 +45,5 @@ Thumbs.db
 
 # pytest
 .pytest_cache
+/cert.pem
+/newkey.pem

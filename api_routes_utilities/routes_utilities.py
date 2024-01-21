@@ -222,3 +222,315 @@
 #     except Exception as e:
 #         log.error(f"Exception occurred: {str(e)}")
 #         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     # Redirect to GitHub for authentication
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+#
+#     # Set the session ID cookie in the response
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, max_age=3600)
+#     return response
+
+#
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     # Generate the authorization URL for GitHub OAuth
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     try:
+#         auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+#     except Exception as e:
+#         log.error(f"Error generating authorization URL: {e}")
+#         raise HTTPException(status_code=500, detail="Error generating authorization URL")
+#
+#     # Set the session ID cookie in the response
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, max_age=3600)
+#     log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#
+#     return response
+
+#
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     # Generate the authorization URL for GitHub OAuth
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     response = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+#
+#     # Ensure the response is a RedirectResponse and set the session_id cookie
+#     if isinstance(response, RedirectResponse):
+#         response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, max_age=3600)
+#         log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#         return response
+#     else:
+#         log.error(f"Expected a RedirectResponse, but got: {type(response)}")
+#         raise HTTPException(status_code=500, detail="Error during redirection to GitHub")
+
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     # Generate the authorization URL for GitHub OAuth
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     try:
+#         auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+#     except Exception as e:
+#         log.error(f"Error generating authorization URL: {e}")
+#         raise HTTPException(status_code=500, detail="Error generating authorization URL")
+#
+#     # Set the session ID cookie in the response
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, samesite='Lax', max_age=3600) # Removed `secure=True` for local testing
+#     log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#
+#     return response
+
+
+#
+# #thuis sets session and outh state correctly but does not redirect to github
+# @app.get("/login/github")
+# async def login_via_github(request: Request):
+#     # Check if the user is already authenticated
+#     if 'auth_token' in request.state.session:
+#         log.debug("User already authenticated, redirecting to home.")
+#         return RedirectResponse(url='/')
+#
+#     # Generate the OAuth state
+#     state = secrets.token_urlsafe(32)
+#     request.state.session['oauth_state'] = state
+#     log.debug(f"Generated OAuth state: {state}")
+#
+#     # Retrieve or create a new session ID
+#     session_id = request.cookies.get('session_id') or str(uuid.uuid4())
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#     log.debug(f"Session data saved to Redis: {request.state.session} with session_id: {session_id}")
+#
+#     # Generate the authorization URL for GitHub OAuth
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     try:
+#         auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+#     except Exception as e:
+#         log.error(f"Error generating authorization URL: {e}")
+#         raise HTTPException(status_code=500, detail="Error generating authorization URL")
+#
+#     # Set the session ID cookie in the response
+#     response = RedirectResponse(url=auth_url)
+#     response.set_cookie(key="session_id", value=session_id, httponly=True, secure=True, max_age=3600)
+#     log.debug(f"Redirecting to GitHub for authentication with session_id: {session_id}")
+#
+#     return response
+#
+#
+# @app.route('/auth/github/callback')
+# async def authorize(request: Request):
+#     # Retrieve the session ID from the cookie
+#     session_id = request.cookies.get('session_id')
+#     log.debug(f"Callback received with session_id: {session_id}")
+#
+#     if not session_id:
+#         log.error("Session ID is None. Possible cookie issue.")
+#         # Redirect to an error page or handle as needed
+#         return RedirectResponse(url='/login-error?message=Session ID not found')
+#
+#     # Retrieve the session data from Redis
+#     session_data_json = redis_client.get(session_id)
+#     if not session_data_json:
+#         log.error("Session data not found in Redis.")
+#         # Redirect to an error page or handle as needed
+#         return RedirectResponse(url='/login-error?message=Session data not found')
+#
+#     request.state.session = json.loads(session_data_json)
+#     log.debug(f"Retrieved session data from Redis: {session_data_json}")
+#
+#     # Compare the OAuth state
+#     session_state = request.state.session.get('oauth_state')
+#     callback_state = request.query_params.get('state')
+#     log.debug(f"Session State: {session_state}, Callback State: {callback_state}")
+#
+#     if session_state != callback_state:
+#         log.error("State mismatch error.")
+#         # Redirect to an error page or handle as needed
+#         return RedirectResponse(url='/login-error?message=State mismatch')
+#
+#     try:
+#         # Exchange the code for a token
+#         token = await oauth.github.authorize_access_token(request)
+#         request.state.session['auth_token'] = token['access_token']
+#
+#         # Update the session data in Redis
+#         redis_client.set(session_id, json.dumps(request.state.session))
+#         log.debug("Authorization successful, redirecting to authenticated page.")
+#         return RedirectResponse(url='/authenticated')
+#     except Exception as e:
+#         log.error(f"Error during authorization: {e}")
+#         # Redirect to an error page or handle as needed
+#         return RedirectResponse(url='/login-error?message=Authorization failure')
+
+
+##this worked but did not call the callback
+# @app.route('/auth/github/callback')
+# async def authorize(request: Request):
+#     # Retrieve the session ID from the cookie
+#     session_id = request.cookies.get('session_id')
+#     log.debug(f"Callback received with session_id: {session_id}")
+#
+#     # Retrieve the session data from Redis
+#     session_data_json = redis_client.get(session_id)
+#     if session_data_json:
+#         request.state.session = json.loads(session_data_json)
+#     else:
+#         request.state.session = {}
+#     log.debug(f"Retrieved session data from Redis: {session_data_json}")
+#
+#     # Compare the OAuth state
+#     session_state = request.state.session.get('oauth_state')
+#     callback_state = request.query_params.get('state')
+#     log.debug(f"Session State: {session_state}, Callback State: {callback_state}")
+#     if session_state != callback_state:
+#         raise HTTPException(status_code=400, detail="State mismatch")
+#
+#     # Exchange the code for a token
+#     token = await oauth.github.authorize_access_token(request)
+#
+#     # Here, you might want to use the token to fetch user information from GitHub,
+#     # create a user session, or perform other application-specific actions
+#     request.state.session['auth_token'] = token['access_token']
+#
+#     # Update the session data in Redis
+#     redis_client.set(session_id, json.dumps(request.state.session))
+#
+#     # Redirect the user to a specific page after successful authentication
+#     return RedirectResponse(url='/authenticated')
+#
+
+#
+# @app.route('/auth/github/callback')
+# async def authorize(request: Request):
+#     session_state = request.state.session.get('oauth_state')
+#     callback_state = request.query_params.get('state')
+#     log.info(f"Session State: {session_state}, Callback State: {callback_state}")
+#     if session_state != callback_state:
+#         raise HTTPException(status_code=400, detail="State mismatch")
+#
+#     code = request.query_params.get('code')
+#     token = await oauth.github.authorize_access_token(request, code=code)
+#     request.state.session['auth_token'] = token['access_token']
+#     log.debug(f"GitHub access token retrieved: {token['access_token']}")
+#     return RedirectResponse(url='/authenticated')
+
+
+
+#
+# @app.route('/auth/github/callback')
+# async def authorize(request: Request):
+#     log.debug("Received GitHub callback")
+#     session_state = request.session.get('oauth_state')
+#     callback_state = request.query_params.get('state')
+#     log.info(f"Session State: {session_state}, Callback State: {callback_state}")
+#
+#     if session_state != callback_state:
+#         log.error("State mismatch error")
+#         raise HTTPException(status_code=400, detail="State mismatch")
+#
+#     token = await oauth.github.authorize_access_token(request)
+#     request.session['auth_token'] = token['access_token']
+#     log.debug(f"GitHub access token retrieved: {token['access_token']}")
+#     return RedirectResponse(url='/authenticated')
+
+
+
+# @app.route('/login/github')
+# async def login_via_github(request: Request):
+#     if 'auth_token' in request.session:
+#         # Redirect to a page for authenticated users
+#         return RedirectResponse(url='/')
+#     redirect_uri = 'http://localhost:8000/auth/github/callback'
+#     return await oauth.github.authorize_redirect(request, redirect_uri)
+#
+# @app.route('/auth/github/callback')
+# # @app.route('/authorize')
+# async def authorize(request: Request):
+#     token = await oauth.github.authorize_access_token(request)
+#     request.session['auth_token'] = token['access_token']
+#     # Redirect to a frontend route
+#     return RedirectResponse(url='/authenticated')
+
+
+
+
+# @app.get("/logout")
+# async def logout(request: Request):
+#     session_id = request.cookies.get('session_id')
+#     if session_id:
+#         redis_client.delete(session_id)
+#     return RedirectResponse(url='/')
+
+
+# @app.get("/logout")
+# async def logout(request: Request):
+#     request.session.clear()
+#     # Redirect to the home page or login page after logout
+#     return RedirectResponse(url='/')
+
+

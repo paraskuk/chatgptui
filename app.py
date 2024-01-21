@@ -73,7 +73,7 @@ oauth.register(
     access_token_url='https://github.com/login/oauth/access_token',
     authorize_url='https://github.com/login/oauth/authorize',
     api_base_url='https://api.github.com/',
-    client_kwargs={'scope': 'repo'},
+    client_kwargs={'scope': 'public_repo'}
 )
 
 router = APIRouter()
@@ -214,6 +214,7 @@ async def login_via_github(request: Request):
 
     return response
 
+
 @app.route('/auth/github/callback', methods=['GET'], name='authorize')
 async def authorize(request: Request):
     # Retrieve the session ID from the cookie
@@ -256,6 +257,7 @@ async def authorize(request: Request):
         log.error(f"Error during authorization: {e}")
         return RedirectResponse(url='/login-error?message=Authorization failure')
 
+
 @app.get("/login-error")
 async def login_error(request: Request, message: str):
     # Display an error message or render a template with the error
@@ -275,6 +277,7 @@ async def logout(request: Request):
 
     # Redirect to the home page or login page after logout
     return RedirectResponse(url='/')
+
 
 @app.get("/authenticated")
 async def authenticated(request: Request):

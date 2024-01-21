@@ -17,10 +17,12 @@ This application is built using FastAPI for the API and JS,HTML and CSS for the 
 1. Clone the repository
 2. Install the required packages using `pip install -r requirements.txt`
 3. Set the `OPEN_AI_KEY` environment variable with your OpenAI API key.
+4. Setup Redis server on your machine as outlined here https://redis.io/docs/install/install-redis/ 
+
 
 ## Usage
-
-1. Run the application using the command `uvicorn main:app --reload`.
+1. Start Redis server with `sudo service redis-server start`
+2. Run the application using the command `uvicorn main:app --reload` on your IDE.
 2. Navigate to `http://localhost:8000/` on your browser to access the application.
 3. Enter your query in the input field and click on the `Submit` button to generate a response.
 

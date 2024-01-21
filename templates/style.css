@@ -26,6 +26,13 @@ body {
     padding-top: 10px;
 }
 
+#start-record-btn {
+    font-size: 24px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
 
 
 

@@ -1,4 +1,3 @@
-
 async function sendRequest() {
     const question = document.getElementsByName("user_input")[0].value;
     const response = await fetch('/ask_gpt4/', {
@@ -111,63 +110,8 @@ function getCurrentResponseId() {
     return document.getElementById("currentResponseId").value;
 }
 
-// index.js
 /**          Speech Recognition Starts here          **/
 
-/*
-// Function to start speech recognition
-function startSpeechRecognition() {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert('Your browser does not support speech recognition. Please try Chrome.');
-        return;
-    }
-
-    var recognition = new webkitSpeechRecognition();
-    recognition.continuous = false; // Set to false for single-shot mode
-    recognition.interimResults = false; // Set to true if you want to see intermediate results
-    recognition.lang = 'en-US'; // Set the language
-
-    recognition.onstart = function() {
-        console.log('Speech recognition service has started');
-    };
-
-    recognition.onresult = function(event) {
-        var transcript = event.results[0][0].transcript;
-        console.log('Transcript: ' + transcript);
-        sendSpeechToServer(transcript);
-    };
-
-    recognition.onerror = function(event) {
-        console.error('Speech recognition error', event.error);
-    };
-
-    recognition.onend = function() {
-        console.log('Speech recognition service disconnected');
-    };
-
-    recognition.start();
-}
-*/
-
-// Function to send the speech transcript to the server version that works
-/*function sendSpeechToServer(transcript) {
-    // Make an AJAX call or fetch request to send the transcript to the server
-    fetch('/ask_gpt4', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_input: transcript, model: 'gpt-4' })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        // Process and display the response from your server
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}*/
 
 function sendSpeechToServer(transcript) {
     // Display the transcribed message
@@ -177,27 +121,26 @@ function sendSpeechToServer(transcript) {
     // Send the transcribed message to the server
     fetch('/ask_gpt4', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_input: transcript, model: 'gpt-4' })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user_input: transcript, model: 'gpt-4'})
     })
-    .then(response => response.json())
-    .then(data => {
-        if ("response" in data) {
-            // Display the response from the server
-            answerElement.innerHTML += `<br><br>Response: ${data.response}`;
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        answerElement.innerHTML += `<br><br>Error: ${error}`;
-    });
+        .then(response => response.json())
+        .then(data => {
+            if ("response" in data) {
+                // Display the response from the server
+                answerElement.innerHTML += `<br><br>Response: ${data.response}`;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            answerElement.innerHTML += `<br><br>Error: ${error}`;
+        });
 }
-
-
 
 
 //global variable for speech recognition
 let isRecording = false;
+
 // Function to toggle speech recognition on and off
 function toggleSpeechRecognition() {
     // Assuming you have a variable to track the state of recording
@@ -226,21 +169,21 @@ if ('webkitSpeechRecognition' in window) {
     recognition.interimResults = false;
     recognition.lang = 'en-US';
 
-    recognition.onstart = function() {
+    recognition.onstart = function () {
         displaySpeechMessage('Speech recognition service has started.');
     };
 
-    recognition.onresult = function(event) {
+    recognition.onresult = function (event) {
         var transcript = event.results[0][0].transcript;
         displaySpeechMessage('Transcript: ' + transcript);
         sendSpeechToServer(transcript);
     };
 
-    recognition.onerror = function(event) {
+    recognition.onerror = function (event) {
         displaySpeechMessage('Speech recognition error: ' + event.error);
     };
 
-    recognition.onend = function() {
+    recognition.onend = function () {
         displaySpeechMessage('Speech recognition service disconnected.');
     };
 } else {
@@ -261,27 +204,6 @@ function stopSpeechRecognition() {
     }
 }
 
-
-
-
-
-
-/*
-// Event handler for final results
-recognition.onresult = function(event) {
-    // Get the transcript from the event
-    var transcript = event.results[0][0].transcript;
-
-    // Send the transcript to the server
-    sendSpeechToServer(transcript);
-};
-
-// Event handler for the end of recognition
-recognition.onend = function() {
-    // Handle the end of the recognition process
-    console.log("Speech recognition ended.");
-};
-*/
 
 function startDictation() {
 
@@ -307,7 +229,6 @@ function startDictation() {
 }
 
 
-
 /**          Speech Recognition Ends here          **/
 
 
@@ -326,40 +247,34 @@ document.addEventListener('DOMContentLoaded', function () {
         thumbsUpButton.addEventListener('click', () => sendRating('up'));
         thumbsDownButton.addEventListener('click', () => sendRating('down'));
     }
-        // Attach event listener to the login button
-       const loginButton = document.getElementById('login-github-btn');
+    // Attach event listener to the login button
+    const loginButton = document.getElementById('login-github-btn');
     if (loginButton) {
-        loginButton.addEventListener('click', function() {
+        loginButton.addEventListener('click', function () {
             window.location.href = '/login/github';
         });
     }
 
     //authenticated message
-     if (window.location.pathname === '/authenticated') {
+    if (window.location.pathname === '/authenticated') {
 
-    document.getElementById('logout-github-btn').style.display = 'block';
-}
+        document.getElementById('logout-github-btn').style.display = 'block';
+    }
     // Attach event listener to the logout button
-      const logoutButton = document.getElementById('logout-github-btn');
+    const logoutButton = document.getElementById('logout-github-btn');
     if (logoutButton) {
-        logoutButton.addEventListener('click', function() {
+        logoutButton.addEventListener('click', function () {
             window.location.href = '/logout';
         });
     }
 
 
-     // Attach event listener to the signup button
+    // Attach event listener to the signup button
     document.getElementById('start-record-btn').addEventListener('click', startDictation);
-   let startRecordBtn = document.getElementById('start-record-btn');
+    let startRecordBtn = document.getElementById('start-record-btn');
     if (startRecordBtn) {
         startRecordBtn.addEventListener('click', startSpeechRecognition);
     }
 
 
-
-
-
 });
-
-
-

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-          <link rel="stylesheet" href="/templates/style.css">
+    <link rel="stylesheet" href="/templates/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', (event) => {
@@ -15,23 +15,7 @@
     });</script>
 
 </head>
-<!--?<style>
-    body {
-        display: flex;
 
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-    }
-
-    .container {
-        max-height: 90vh;
-        overflow-y: auto;
-        padding: 1rem;
-    }
-</style>-->
 <body>
 <div class="container">
     <h1>Code Completion App using GPT-4</h1>
@@ -54,13 +38,14 @@
     </div>
     <input type="hidden" id="currentResponseId" value="">
 </div>
-<!--?<div id="start-record-container">-->
-    <button id="start-record-btn" title="Start Recording">
-        🎤
-    </button>
+
+<button id="start-record-btn" title="Start Recording">
+    🎤
+</button>
+
+
 <!--?</div>-->
 <div id="speech-messages" class="alert alert-info" style="display: none;"></div>
-
 
 
 <div id="feedback" style="display:none;"></div>

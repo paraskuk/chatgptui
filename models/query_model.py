@@ -6,10 +6,8 @@ import uuid
 import redis
 import json
 
-#instantiating redis client
+# instantiating redis client
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
-
-
 
 
 class QueryModel(BaseModel):
@@ -20,6 +18,7 @@ class QueryModel(BaseModel):
 class FeedbackModel(BaseModel):
     responseId: str
     feedback: str
+
 
 class GitHubFile(BaseModel):
     content: str

@@ -1,3 +1,57 @@
+/*async function sendRequest() {
+    const question = document.getElementsByName("user_input")[0].value;
+    const response = await fetch('/ask_gpt4/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_input: question
+        })
+    });
+    const data = await response.json();
+
+    if (response.status === 200) {
+        if ("response" in data) {
+
+            const answerElement = document.getElementById("answer");
+            answerElement.innerHTML = ''; // Clear previous content
+
+            // Apply PEP8 indentation to the GPT-4 response code
+            const formattedCode = applyPEP8Indentation(data.response);
+
+            // Create the code block with formatted code
+            const preElement = document.createElement('pre');
+            const codeElement = document.createElement('code');
+            codeElement.classList.add('language-python');
+            codeElement.innerHTML = formattedCode; // Use innerHTML to include indentation spans
+
+            preElement.appendChild(codeElement);
+            answerElement.appendChild(preElement);
+
+            // Check if Highlight.js is available and highlight the code
+            if (window.hljs) {
+                hljs.highlightElement(codeElement);
+            } else {
+                console.error('Highlight.js is not loaded.');
+            }
+
+            // Show the rating buttons and set the current response ID
+            document.getElementById("rating").style.display = 'block';
+            document.getElementById("currentResponseId").value = new Date().toISOString();
+        } else if ("error" in data) {
+            document.getElementById("answer").innerHTML = `Error: ${data.error}`;
+            document.getElementById("rating").style.display = 'none';
+        } else {
+            document.getElementById("answer").innerHTML = "Unknown error.";
+            document.getElementById("rating").style.display = 'none';
+        }
+    } else {
+        document.getElementById("answer").innerHTML = "Server error.";
+        document.getElementById("rating").style.display = 'none';
+    }
+}*/
+
 async function sendRequest() {
     const question = document.getElementsByName("user_input")[0].value;
     const response = await fetch('/ask_gpt4/', {
@@ -52,6 +106,7 @@ async function sendRequest() {
     }
 }
 
+
 function applyPEP8Indentation(code) {
 
     code = code.replace(/```python\n/g, '').replace(/```/g, '');
@@ -73,6 +128,32 @@ function applyPEP8Indentation(code) {
         return indent + line.trimStart();
     }).join('\n');
 }
+/*
+function applyPEP8Indentation(code) {
+    // Replace code block markers with empty string
+    code = code.replace(/```python\n/g, '').replace(/```/g, '');
+
+    // Split the code into lines
+    const lines = code.split('\n');
+
+    // Apply indentation rules
+    return lines.map(line => {
+        // Count the leading spaces (assuming 4 spaces per indentation level for PEP 8)
+        const indentLevel = line.search(/\S|$/) / 4;
+
+        // Replace every 4 spaces with a specific amount of padding using the "indent" class
+        let indent = '';
+        for (let i = 0; i < indentLevel; i++) {
+            indent += '<span class="indent"></span>'; // Use the class "indent" for styling the indentation
+        }
+
+        // Remove the leading spaces and replace them with the indentation span
+        // Then return the formatted line
+        return indent + line.trimStart();
+    }).join('\n'); // Rejoin the formatted lines into a single string
+}
+*/
+
 
 document.getElementById('thumbs-up').addEventListener('click', () => sendRating('up'));
 document.getElementById('thumbs-down').addEventListener('click', () => sendRating('down'));
@@ -110,8 +191,8 @@ function getCurrentResponseId() {
     return document.getElementById("currentResponseId").value;
 }
 
-/**          Speech Recognition Starts here          **/
-
+/***************************Speech Recognition Starts here*******************/
+/*
 
 function sendSpeechToServer(transcript) {
     // Display the transcribed message
@@ -135,6 +216,65 @@ function sendSpeechToServer(transcript) {
             console.error('Error:', error);
             answerElement.innerHTML += `<br><br>Error: ${error}`;
         });
+}
+*/
+function sendSpeechToServer(transcript) {
+    fetch('/ask_gpt4', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user_input: transcript, model: 'gpt-4'})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if ("response" in data) {
+            // Use processResponse to format and display the response
+            processResponse(data.response);
+        } else {
+            // Handle any errors
+            displayError(data.error || "An unknown error occurred.");
+        }
+    })
+    .catch((error) => {
+        displayError(`Error: ${error}`);
+    });
+}
+
+function htmlDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
+}
+
+
+function processResponse(response) {
+    const answerElement = document.getElementById("answer");
+    answerElement.innerHTML = ''; // Clear previous content
+
+    // Decode if the response is HTML-encoded
+    const decodedResponse = htmlDecode(response);
+
+    const formattedCode = applyPEP8Indentation(decodedResponse);
+    //const formattedCode = applyPEP8Indentation(response); // If you need PEP8 formatting
+
+    const preElement = document.createElement('pre');
+    const codeElement = document.createElement('code');
+    codeElement.classList.add('language-python');
+    codeElement.textContent = formattedCode; // Use textContent for security
+
+    preElement.appendChild(codeElement);
+    answerElement.appendChild(preElement);
+
+    // Apply syntax highlighting
+    if (window.hljs) {
+        hljs.highlightElement(codeElement);
+    }
+}
+
+
+
+function displayError(message) {
+    const answerElement = document.getElementById("answer");
+    answerElement.textContent = message; // Use textContent for security
+    // If you have an error-specific styling, apply it here
 }
 
 
@@ -206,8 +346,6 @@ function stopSpeechRecognition() {
 
 
 function startDictation() {
-
-
     if (window.hasOwnProperty('webkitSpeechRecognition')) {
         var recognition = new webkitSpeechRecognition();
         recognition.continuous = false; // The recognition will stop after capturing a single utterance

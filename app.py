@@ -261,7 +261,7 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
         # Code completion
         code_completion = create_gpt4_completion(
             query_params.model,
-            "You are a helpful assistant that answers only questions regarding programming.",
+            "You are a helpful assistant that answers only questions regarding programming in Python.",
             query_params.user_input
         )
 

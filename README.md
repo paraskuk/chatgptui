@@ -2,7 +2,8 @@
 # AskGPT
 
 AskGPT is a simple web application that uses the OpenAI API to generate responses to user queries using GPT-4 language model. 
-This application is built using FastAPI for the API and JS,HTML and CSS for the frontend.
+This application is built using FastAPI for the API and JavaScript ,HTML and CSS for the frontend.
+
 ## Requirements
 
 - Python 3.11 or higher
@@ -37,5 +38,5 @@ This project is not licensed for commercial use.
 
 ## Disclaimer
 
-This project is for demonstration of Chat GPT capabilities and should not be used wholly or partly in 
+This project is for demonstration of GPT capabilities and should not be used wholly or partly in 
 any commercial project. 

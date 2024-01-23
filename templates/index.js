@@ -107,7 +107,7 @@ async function sendRequest() {
 }
 
 
-function applyPEP8Indentation(code) {
+/*function applyPEP8Indentation(code) {
 
     code = code.replace(/```python\n/g, '').replace(/```/g, '');
     // Split the code into lines
@@ -127,8 +127,30 @@ function applyPEP8Indentation(code) {
         // Remove the leading spaces and replace them with the indentation span
         return indent + line.trimStart();
     }).join('\n');
-}
-/*
+}*/
+/*function applyPEP8Indentation(code) {
+    // Replace code block markers with empty string
+    code = code.replace(/```python\n/g, '').replace(/```/g, '');
+
+    // Split the code into lines
+    let formattedCode = '';
+    const lines = code.split('\n');
+
+    // Apply indentation rules
+    lines.forEach(line => {
+        // Count the leading spaces (assuming 4 spaces per indentation level for PEP 8)
+        const indentLevel = line.search(/\S|$/) / 4;
+        // Create a padding string that represents the indentation
+        let padding = `${indentLevel * 4}ch`; // ch units represent the width of the zero character
+        // Append the line with padding to the formatted code string
+        formattedCode += `<div style='padding-left: ${padding}'>${line.trim()}</div>`; // Use divs for each line
+    });
+    return formattedCode;
+}*/
+
+
+
+
 function applyPEP8Indentation(code) {
     // Replace code block markers with empty string
     code = code.replace(/```python\n/g, '').replace(/```/g, '');
@@ -152,7 +174,6 @@ function applyPEP8Indentation(code) {
         return indent + line.trimStart();
     }).join('\n'); // Rejoin the formatted lines into a single string
 }
-*/
 
 
 document.getElementById('thumbs-up').addEventListener('click', () => sendRating('up'));
@@ -245,7 +266,7 @@ function htmlDecode(input) {
 }
 
 
-function processResponse(response) {
+/*function processResponse(response) {
     const answerElement = document.getElementById("answer");
     answerElement.innerHTML = ''; // Clear previous content
 
@@ -267,7 +288,33 @@ function processResponse(response) {
     if (window.hljs) {
         hljs.highlightElement(codeElement);
     }
+}*/
+function processResponse(response) {
+    const answerElement = document.getElementById("answer");
+    answerElement.innerHTML = ''; // Clear previous content
+
+    // If you need PEP8 formatting, apply it here
+    const formattedCode = applyPEP8Indentation(response);
+
+    const preElement = document.createElement('pre');
+    preElement.style.overflowX = 'auto';
+    preElement.style.whiteSpace = 'pre-wrap';
+    preElement.style.wordBreak = 'break-word';
+    preElement.style.maxWidth = '100%';
+
+    const codeElement = document.createElement('code');
+    codeElement.classList.add('language-python');
+    codeElement.textContent = response; // Use textContent for security
+
+    preElement.appendChild(codeElement);
+    answerElement.appendChild(preElement);
+
+    // Apply syntax highlighting
+    if (window.hljs) {
+        hljs.highlightElement(codeElement);
+    }
 }
+
 
 
 

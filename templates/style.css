@@ -19,6 +19,23 @@ body {
     display: inline-block;
     width: 1em;
 }
+/*
+pre {
+  overflow-x: auto;
+}*/
+
+code {
+  white-space: pre;
+    word-break: break-word;
+}
+
+pre {
+  /*overflow-x: auto;*/
+  white-space: pre-wrap;  /* Since 'pre' preserves whitespace, 'pre-wrap' will wrap the text */
+  word-break: break-word; /* To prevent overflow due to unbreakable words */
+  max-width: 100%;        /* Ensuring the 'pre' element doesn't exceed the width of its container */
+}
+
 
 
 

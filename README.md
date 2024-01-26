@@ -7,7 +7,7 @@ This application is built using FastAPI for the API and JavaScript ,HTML and CSS
 ## Requirements
 
 - Python 3.11 or higher
-- openai
+- OpenAI API key
 - FastAPI
 - JavaScript
 - Redis

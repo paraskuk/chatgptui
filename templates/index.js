@@ -180,6 +180,10 @@ document.getElementById('thumbs-up').addEventListener('click', () => sendRating(
 document.getElementById('thumbs-down').addEventListener('click', () => sendRating('down'));
 
 
+/**
+ * Function to send the rating to the server after user presses the thumbs up or thumbs down button.
+ * @param {string} rating
+ */
 function sendRating(rating) {
     const responseId = getCurrentResponseId();
     const feedbackElement = document.getElementById("feedback");
@@ -260,6 +264,10 @@ function sendSpeechToServer(transcript) {
     });
 }
 
+/**
+ * Function to decode HTML-encoded strings.
+ * @param {string} input
+ */
 function htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;

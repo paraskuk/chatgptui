@@ -151,7 +151,7 @@ async function sendRequest() {
 
 
 
-function applyPEP8Indentation(code) {
+/*function applyPEP8Indentation(code) {
     // Replace code block markers with empty string
     code = code.replace(/```python\n/g, '').replace(/```/g, '');
 
@@ -173,7 +173,33 @@ function applyPEP8Indentation(code) {
         // Then return the formatted line
         return indent + line.trimStart();
     }).join('\n'); // Rejoin the formatted lines into a single string
+}*/
+/*
+function applyPEP8Indentation(code) {
+    // Split the code into lines
+    const lines = code.split('\n');
+
+    // Apply indentation rules
+    return lines.map(line => {
+        const indentLevel = (line.match(/^(\s+)/) || [''])[0].length;
+        const indent = ' '.repeat(indentLevel); // Replace with actual spaces for indentation
+        return indent + line.trimStart();
+    }).join('\n');
 }
+*/
+
+function applyPEP8Indentation(code) {
+    // Split the code into lines
+    const lines = code.split('\n');
+
+    // Apply indentation rules
+    return lines.map(line => {
+        const indentLevel = line.search(/\S|$/) / 4;
+        const indent = ' '.repeat(indentLevel * 4); // Create a string with a number of spaces
+        return indent + line.trimStart();
+    }).join('\n');
+}
+
 
 
 document.getElementById('thumbs-up').addEventListener('click', () => sendRating('up'));
@@ -264,14 +290,17 @@ function sendSpeechToServer(transcript) {
     });
 }
 
-/**
+/*
+
+/!**
  * Function to decode HTML-encoded strings.
  * @param {string} input
- */
+ *!/
 function htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
 }
+*/
 
 
 /*function processResponse(response) {
@@ -297,6 +326,7 @@ function htmlDecode(input) {
         hljs.highlightElement(codeElement);
     }
 }*/
+/*
 function processResponse(response) {
     const answerElement = document.getElementById("answer");
     answerElement.innerHTML = ''; // Clear previous content
@@ -322,8 +352,121 @@ function processResponse(response) {
         hljs.highlightElement(codeElement);
     }
 }
+*/
+
+/*function processResponse(response) {
+    const answerElement = document.getElementById("answer");
+    answerElement.innerHTML = ''; // Clear previous content
+
+    // Remove backticks if they are present
+    response = response.replace(/```/g, '');
+
+    // Apply PEP8 indentation to the response code
+    const formattedCode = applyPEP8Indentation(response);
+
+    // Create the code block with formatted code
+    const preElement = document.createElement('pre');
+    preElement.style.overflowX = 'auto'; // Add scrolling for overflow
+    preElement.style.whiteSpace = 'pre-wrap'; // Wrap text
+    preElement.style.wordBreak = 'break-word'; // Break long words
+    preElement.style.maxWidth = '100%'; // Max width of container
+
+    const codeElement = document.createElement('code');
+    codeElement.classList.add('language-python');
+    codeElement.textContent = formattedCode; // Use textContent to prevent HTML injection
+
+    preElement.appendChild(codeElement);
+    answerElement.appendChild(preElement);
+
+    // Apply syntax highlighting if Highlight.js is loaded
+    if (window.hljs) {
+        hljs.highlightElement(codeElement);
+    }
+
+    document.getElementById("rating").style.display = 'block';
+    document.getElementById("currentResponseId").value = new Date().toISOString();
+}*/
+
+/*function processResponse(response) {
+    const answerElement = document.getElementById("answer");
+    answerElement.innerHTML = ''; // Clear previous content
+
+    // Decode if the response is HTML-encoded
+    response = htmlDecode(response);
+
+    // Remove backticks and additional formatting
+    response = response.replace(/```/g, '');
+
+    // Apply PEP8 indentation to the response
+    const formattedCode = applyPEP8Indentation(response);
+
+    // Create elements for the code block
+    const preElement = document.createElement('pre');
+    const codeElement = document.createElement('code');
+    codeElement.classList.add('language-python');
+
+    // Insert the formatted code into the code element
+    codeElement.textContent = formattedCode; // Use textContent for security
+
+    // Append the code element to the pre element
+    preElement.appendChild(codeElement);
+
+    // Append the pre element to the answer container
+    answerElement.appendChild(preElement);
+
+    // Apply syntax highlighting
+    if (window.hljs) {
+        hljs.highlightElement(codeElement);
+    }
+
+    // Show the rating buttons and set the current response ID
+    document.getElementById("rating").style.display = 'block';
+    document.getElementById("currentResponseId").value = new Date().toISOString();
+}*/
+
+function processResponse(response) {
+    const answerElement = document.getElementById("answer");
+    answerElement.innerHTML = ''; // Clear previous content
+
+    // Decode if the response is HTML-encoded and remove backticks
+    let decodedResponse = htmlDecode(response).replace(/```/g, '');
+
+    // Apply PEP8 indentation to the decoded response
+    const formattedCode = applyPEP8Indentation(decodedResponse);
+
+    // Create elements for the code block
+    const preElement = document.createElement('pre');
+    const codeElement = document.createElement('code');
+    codeElement.classList.add('language-python');
+    codeElement.textContent = formattedCode; // Use textContent for security
+
+    // Append the code element to the pre element
+    preElement.appendChild(codeElement);
+
+    // Append the pre element to the answer container
+    answerElement.appendChild(preElement);
+
+    // Apply syntax highlighting
+    if (window.hljs) {
+        hljs.highlightElement(codeElement);
+    }
+
+    // Show the rating buttons and set the current response ID
+    document.getElementById("rating").style.display = 'block';
+    document.getElementById("currentResponseId").value = new Date().toISOString();
+}
 
 
+/**
+ * Function to decode HTML-encoded strings.
+ * @param {string} input
+ */
+function htmlDecode(input) {
+    var e = document.createElement('textarea');
+    e.innerHTML = input;
+    // handle case of empty input
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
 
 
 function displayError(message) {

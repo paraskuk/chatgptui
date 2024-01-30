@@ -426,34 +426,46 @@ function processResponse(response) {
 
 function processResponse(response) {
     const answerElement = document.getElementById("answer");
-    answerElement.innerHTML = ''; // Clear previous content
+    answerElement.innerHTML = ''; // Clear any previous content
 
-    // Decode if the response is HTML-encoded and remove backticks
-    let decodedResponse = htmlDecode(response).replace(/```/g, '');
+    // Assume response is plain text. Modify as needed if response is HTML.
+    const formattedResponse = applyPEP8Indentation(response);
 
-    // Apply PEP8 indentation to the decoded response
-    const formattedCode = applyPEP8Indentation(decodedResponse);
-
-    // Create elements for the code block
     const preElement = document.createElement('pre');
     const codeElement = document.createElement('code');
     codeElement.classList.add('language-python');
-    codeElement.textContent = formattedCode; // Use textContent for security
+    codeElement.textContent = formattedResponse; // Use textContent for plain text
 
-    // Append the code element to the pre element
     preElement.appendChild(codeElement);
-
-    // Append the pre element to the answer container
     answerElement.appendChild(preElement);
 
     // Apply syntax highlighting
     if (window.hljs) {
         hljs.highlightElement(codeElement);
     }
+}
 
-    // Show the rating buttons and set the current response ID
-    document.getElementById("rating").style.display = 'block';
-    document.getElementById("currentResponseId").value = new Date().toISOString();
+function sendFeedback(rating) {
+    // Example feedback data
+    const feedbackData = {
+        responseId: getCurrentResponseId(),  // Assuming you have a way to get the current response ID
+        feedback: rating
+    };
+
+    fetch('/rate_response/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(feedbackData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Feedback sent successfully:", data);
+    })
+    .catch(error => {
+        console.error("Error sending feedback:", error);
+    });
 }
 
 

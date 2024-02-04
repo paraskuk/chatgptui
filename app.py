@@ -76,94 +76,69 @@ router = APIRouter()
 
 #########################GITHUB ROUTES#######################################
 
-
-#########################GITHUB ROUTES#######################################
-
-
 @app.get("/login/github")
 async def login_via_github(request: Request):
-    if 'auth_token' in request.state.session:
-        return RedirectResponse(url='/')
-
+    # Generate the OAuth state
     state = secrets.token_urlsafe(32)
-    request.state.session['oauth_state'] = state
+    request.session['oauth_state'] = state
 
-    session_id = request.cookies.get('session_id') or str(uuid.uuid4())
-
-    # Extend the session expiration by 1 day
-    extended_expiration_time = datetime.now() + timedelta(days=1)
-    extended_timestamp = int(time.mktime(extended_expiration_time.timetuple()))
-
-    # Update the session data with the new expiration time
-    request.state.session['_expiration'] = extended_timestamp
-
-    # Save the session data to Redis with the new expiration
-    redis_client.set(session_id, json.dumps(request.state.session), ex=86400)  # Set Redis key expiration to 1 day
-
+    # Define the redirect URI for OAuth callback
     redirect_uri = request.url_for('authorize')
+
+    # Generate the authorization URL and redirect the user to GitHub for authentication
     try:
-        auth_url = await oauth.github.authorize_redirect(request, redirect_uri, state=state)
+        # Ensure `authorize_redirect` is properly awaited
+        return await oauth.github.authorize_redirect(request, redirect_uri, state=state)
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=400)
+        # Log error and return a JSON response indicating the failure
+        log.debug(f"Error during GitHub authorization redirect: {e}")  # Consider using a proper logging mechanism
+        return JSONResponse(status_code=500, content={"error": "Internal Server Error"})
 
-    response = RedirectResponse(url=auth_url)
-    response.set_cookie(key="session_id", value=session_id, httponly=True,
-                        max_age=86400)  # Cookie expiration set to 1 day
-    return response
 
-@app.route('/auth/github/callback', methods=['GET'], name='authorize')
+@app.route('/auth/github/callback')
 async def authorize(request: Request):
-    # Retrieve session ID from cookie
-    session_id = request.cookies.get('session_id')
-    if not session_id:
-        return RedirectResponse(url='/login-error?message=Session ID not found')
-
-    # Retrieve session data from Redis
-    session_data = redis_client.get(session_id)
-    if not session_data:
-        return RedirectResponse(url='/login-error?message=Session data not found')
-
-    request.session = json.loads(session_data)
-
-    # Compare OAuth state
-    if request.session.get('oauth_state') != request.query_params.get('state'):
-        return RedirectResponse(url='/login-error?message=State mismatch')
-
+    # Handle the OAuth callback and exchange the code for a token
     try:
-        # Exchange code for token
         token = await oauth.github.authorize_access_token(request)
-        request.session['auth_token'] = token['access_token']
-        redis_client.set(session_id, json.dumps(request.session), ex=3600)
-        return RedirectResponse(url='/authenticated')
+        request.state.session['auth_token'] = token['access_token']
+        # Process the token (e.g., create a user session)
+        # Redirect the user to a target page after successful authentication
+        log.info("Successfully authenticated with GitHub")
+        return RedirectResponse(url='/')
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
-
+        # Log error and handle the failure (e.g., redirect to an error page)
+        log.error(f"Error in OAuth callback: {e}")  # Consider using a proper logging mechanism
+        return RedirectResponse(url='/error-page')
 
 
 @app.get("/login-error")
 async def login_error(request: Request, message: str):
     # Display an error message or render a template with the error
+    log.error(f"Login error: {message}")
     return JSONResponse(content={"error": message}, status_code=400)
 
 
 @app.get("/logout")
 async def logout(request: Request):
     # Clear Redis session data
-    log.debug("Performing logout.")
+    log.info("Performing logout.")
     session_id = request.cookies.get('session_id')
     if session_id:
+        log.info(f"Deleting session data for session ID")
         redis_client.delete(session_id)
 
     # Clear default session data
     request.session.clear()
-
+    log.info(f"cleared default session data")
     # Redirect to the home page or login page after logout
+    log.info("Redirecting to home page after logout.")
     return RedirectResponse(url='/')
 
 
 @app.get("/authenticated")
 async def authenticated(request: Request):
     # Implement the logic for authenticated users
+    log.info("Successfully authenticated with GitHub")
     return JSONResponse({'message': 'Successfully authenticated with GitHub'})
 
 
@@ -332,3 +307,9 @@ async def send_feedback(feedback_data: FeedbackModel):
     # Note: GPT-4 doesn't have a direct mechanism to improve based on this feedback
 
     return {"message": "Feedback received"}
+
+
+@app.get("/some-success-page")
+async def some_success_page():
+    log.info("Successfully authenticated with GitHub")
+    return {"message": "Successfully authenticated with GitHub"}

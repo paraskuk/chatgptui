@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field , EmailStr
+from pydantic import BaseModel, Field, EmailStr
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -25,8 +25,6 @@ class Committer(BaseModel):
     email: EmailStr
 
 
-
-
 class GitHubFile(BaseModel):
     content: str = Field(..., description="Content of the file")
     filename: str = Field(..., description="Filename including extension")
@@ -34,7 +32,7 @@ class GitHubFile(BaseModel):
     username: str = "paraskuk"
     message: str = "test commit"
     committer: dict = None
-    #sha: str = None
+    # sha: str = None
 
 
 class RedisSessionMiddleware(BaseHTTPMiddleware):

@@ -163,46 +163,6 @@ async def authenticated(request: Request):
     return JSONResponse({'message': 'Successfully authenticated with GitHub'})
 
 
-# @app.post("/save-to-github/{username}/{repository}")
-# async def save_to_github(repository: str, request: Request, file: GitHubFile):
-#     # Check if the user is authenticated and has an access token
-#     log.info("Starting save to github route")
-#     if 'auth_token' not in request.state.session:
-#         log.info("auth token not in session, raising exception")
-#         raise HTTPException(status_code=401, detail="Not authenticated with GitHub")
-#     # Retrieve the access token from the session
-#     log.info("Retrieving access token from the session")
-#     access_token = request.state.session['auth_token']
-#
-#     # Construct the full repository name and the URL for the GitHub API call
-#     #full_repo = f"{username}/{repository}"  # Combine username and repository
-#     full_repo = f"{file.username}/{repository}"  # Combine username and repository changed this to tkae parameters
-#     url = f"https://api.github.com/repos/{full_repo}/contents/{file.filename}"
-#
-#     # Prepare the data for the GitHub API call
-#     data = {
-#         "message": f"Update {file.filename}",
-#         "content": base64.b64encode(file.content.encode()).decode("utf-8")
-#     }
-#
-#     # Set the headers, including the Authorization header with the OAuth token
-#     headers = {
-#         "Authorization": f"token {access_token}",
-#         #"Accept": "application/vnd.github+json"
-#         "Accept": "application/vnd.github.v3+json" #changed this
-#     }
-#
-#     # Make the PUT request to the GitHub API
-#     log.info(f"Making a PUT request to the GitHub API for {url}")
-#     response = requests.put(url, json=data, headers=headers)
-#
-#     # Check the response status code
-#     if response.status_code not in [200, 201]:
-#         raise HTTPException(status_code=response.status_code, detail=response.json())
-#
-#     # Return the JSON response from GitHub
-#     log.info(f"Successfully saved to GitHub")
-#     return response.json()
 
 @app.post("/save-to-github/{username}/{repository}")
 async def save_to_github(repository: str, request: Request, file: GitHubFile):
@@ -219,14 +179,16 @@ async def save_to_github(repository: str, request: Request, file: GitHubFile):
     url = f"https://api.github.com/repos/{full_repo}/contents/{file.filename}"
 
     # Log the received file object
-    log.debug(
-        f"Received file object: filename={file.filename}, content={file.content[:30]}...")  # Log first 30 chars of content
+    log.debug(f"Received file object: filename={file.filename}, content preview={file.content[:30]}...")
 
     encoded_content = base64.b64encode(file.content.encode()).decode("utf-8")
     data = {
-        "message": f"Update {file.filename}",
-        "content": encoded_content
+        "message": file.message,
+        "content": encoded_content,
     }
+
+    if file.committer:  # If committer info is provided, include it
+        data["committer"] = file.committer
 
     # Log the prepared data dictionary
     log.debug(f"Prepared data for GitHub API call: {data}")

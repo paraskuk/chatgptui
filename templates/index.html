@@ -21,11 +21,34 @@
 <body>
 <div class="container">
     <h1>Code Completion App using GPT-4</h1>
-    <form>
+<!--?    <form>
         <label for="question">Enter your prompt:</label><br>
         <input type="text" id="question" name="user_input"><br>
         <br>
         <button type="button" onclick="sendRequest()">Submit</button>
+    </form>-->
+
+<form id="githubForm">
+        <label for="question">Enter your prompt:</label><br>
+        <input type="text" id="question" name="user_input"><br>
+    <br>
+    <button type="button" onclick="sendRequest()">Submit</button>
+    <hr>
+        <!-- New fields for GitHub file creation -->
+        <label for="filename">Filename:</label><br>
+        <input type="text" id="filename" name="filename" placeholder="Enter filename including extension"><br>
+
+        <label for="commit-message">Commit Message:</label><br>
+        <input type="text" id="commit-message" name="commit_message" placeholder="Enter commit message"><br>
+
+        <label for="committer-name">Committer Name (optional):</label><br>
+        <input type="text" id="committer-name" name="committer_name" placeholder="Enter committer's name"><br>
+
+        <label for="committer-email">Committer Email (optional):</label><br>
+        <input type="email" id="committer-email" name="committer_email" placeholder="Enter committer's email"><br>
+    <hr>
+<!-- Save to GitHub button that sends to a repo -->
+<button id="save-to-github-btn">Save to GitHub</button>
     </form>
 
     <br>
@@ -58,7 +81,8 @@
 <!-- Logout button for GitHub -->
 <button id="logout-github-btn">Logout from GitHub</button>
 <!-- Save to GitHub button that sends to a repo -->
-<button id="save-to-github-btn">Save to GitHub</button>
+<!--?
+-->
 <!-- Message container to show messages once user saves to GitHub -->
 <div id="message-container"></div>
 <!-- Message to show if authenticated with GitHub -->

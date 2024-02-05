@@ -298,8 +298,8 @@ function startDictation() {
 
 /**          Speech Recognition Ends here          **/
 
-
-function saveCodeToGitHub() {
+//this works without the additional gitub form
+/*function saveCodeToGitHub() {
     console.log('Save to GitHub button clicked.')
     const codeContent = document.getElementById('answer').innerText;
     // Separate username and repository for the fetch call
@@ -336,7 +336,71 @@ function saveCodeToGitHub() {
             displayMessage(`Error saving file to GitHub: ${error}`, 'error');
         });
     console.log("Ending saveCodeToGitHub function.");
+}*/
+
+//github form related function
+function saveCodeToGitHub() {
+    console.log('Save to GitHub button clicked.');
+
+    // Existing code for getting the content
+    const codeContent = btoa(document.getElementById('answer').innerText); // Base64 encode the content to match GitHub's requirement
+        //btoa(document.getElementById('answer').innerText);
+    // New code to get additional inputs from the form
+    const message = document.getElementById('commit-message').value;
+    const committerName = document.getElementById('committer-name').value;
+    const committerEmail = document.getElementById('committer-email').value;
+    const filename = document.getElementById('filename').value; // Retrieve the filename from the form
+
+    // Define the GitHub username, repository, and filename
+    const username = 'paraskuk'; // Username of the GitHub account
+    const repository = 'test-repo-for-app'; // Repository name
+    //const filename = 'code.py'; // Assume you want to create or update this file
+
+    // Format the URL for the API call
+    const url = `/save-to-github/${encodeURIComponent(username)}/${encodeURIComponent(repository)}`;
+
+    // Prepare the request payload including new fields
+    const payload = {
+        content: codeContent, // Content of the file, base64 encoded
+        filename: filename, // Filename including extension
+        message: message, // Commit message
+    };
+
+    // Optionally include committer details if provided
+    if (committerName && committerEmail) {
+        payload.committer = {
+            name: committerName,
+            email: committerEmail
+        };
+    }
+
+    // Perform the fetch call to the backend
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Authentication token, if needed
+            'Authorization': `Bearer ${sessionStorage.getItem('githubToken')}`
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayMessage('File saved to GitHub successfully.', 'success');
+    })
+    .catch(error => {
+        displayMessage(`Error saving file to GitHub: ${error}`, 'error');
+    });
+
+    console.log("Ending saveCodeToGitHub function.");
 }
+
+
 
 // DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function () {
@@ -389,13 +453,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
- /*   const saveToGithubButton = document.getElementById('save-to-github-btn');
-    if (saveToGithubButton) {
-        saveToGithubButton.addEventListener('click', function () {
-            console.log('Save Button clicked');
-            saveCodeToGitHub(); // Call the saveCodeToGitHub function directly
-        });
-    }*/
 
 
 });

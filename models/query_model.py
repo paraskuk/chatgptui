@@ -21,10 +21,13 @@ class FeedbackModel(BaseModel):
 
 
 class GitHubFile(BaseModel):
-    content: str
-    filename: str
-    repository: str
-    token: str  # consider a more secure way to handle tokens
+    content: str = Field(..., description="Content of the file")
+    filename: str = Field(..., description="Filename including extension")
+    repository: str = "test-repo-for-app"
+    username: str = "paraskuk"
+    message: str = None
+    committer: str = None
+    sha: str = None
 
 
 class RedisSessionMiddleware(BaseHTTPMiddleware):

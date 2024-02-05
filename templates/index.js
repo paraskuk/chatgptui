@@ -1,3 +1,14 @@
+// Function to save code to GitHub by getting it from the answer element
+
+
+
+// Function to display messages in the UI for GitHub save functionality
+function displayMessage(message, type) {
+    const messageElement = document.getElementById('message-container');
+    messageElement.textContent = message;
+    messageElement.className = type; // 'success' or 'error'
+    messageElement.style.display = 'block'; // Make the message container visible
+}
 
 
 async function sendRequest() {
@@ -55,7 +66,6 @@ async function sendRequest() {
 }
 
 
-
 function applyPEP8Indentation(code) {
     // Split the code into lines
     const lines = code.split('\n');
@@ -67,7 +77,6 @@ function applyPEP8Indentation(code) {
         return indent + line.trimStart();
     }).join('\n');
 }
-
 
 
 document.getElementById('thumbs-up').addEventListener('click', () => sendRating('up'));
@@ -118,23 +127,20 @@ function sendSpeechToServer(transcript) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user_input: transcript, model: 'gpt-4'})
     })
-    .then(response => response.json())
-    .then(data => {
-        if ("response" in data) {
-            // Use processResponse to format and display the response
-            processResponse(data.response);
-        } else {
-            // Handle any errors
-            displayError(data.error || "An unknown error occurred.");
-        }
-    })
-    .catch((error) => {
-        displayError(`Error: ${error}`);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if ("response" in data) {
+                // Use processResponse to format and display the response
+                processResponse(data.response);
+            } else {
+                // Handle any errors
+                displayError(data.error || "An unknown error occurred.");
+            }
+        })
+        .catch((error) => {
+            displayError(`Error: ${error}`);
+        });
 }
-
-
-
 
 
 function processResponse(response) {
@@ -172,13 +178,13 @@ function sendFeedback(rating) {
         },
         body: JSON.stringify(feedbackData)
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Feedback sent successfully:", data);
-    })
-    .catch(error => {
-        console.error("Error sending feedback:", error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log("Feedback sent successfully:", data);
+        })
+        .catch(error => {
+            console.error("Error sending feedback:", error);
+        });
 }
 
 
@@ -293,6 +299,45 @@ function startDictation() {
 /**          Speech Recognition Ends here          **/
 
 
+function saveCodeToGitHub() {
+    console.log('Save to GitHub button clicked.')
+    const codeContent = document.getElementById('answer').innerText;
+    // Separate username and repository for the fetch call
+    const username = 'paraskuk'; // Username of the GitHub account
+    const repository = 'test-repo-for-app'; // Repository name
+    const filename = 'code.py'; // The name of the file in the repository
+
+    // Format the URL with username and repository name
+    const url = `/save-to-github/${encodeURIComponent(username)}/${encodeURIComponent(repository)}`;
+    console.log("URL is : ", url);
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Include the OAuth token in the request if needed
+            'Authorization': `Bearer ${sessionStorage.getItem('githubToken')}`
+        },
+        body: JSON.stringify({
+            content: codeContent,
+            filename: filename
+            // The repository is now part of the URL, not the body
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayMessage('File saved to GitHub successfully.', 'success');
+        })
+        .catch(error => {
+            displayMessage(`Error saving file to GitHub: ${error}`, 'error');
+        });
+    console.log("Ending saveCodeToGitHub function.");
+}
+
 // DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function () {
     // Attach event listener to the submit button
@@ -336,6 +381,21 @@ document.addEventListener('DOMContentLoaded', function () {
     if (startRecordBtn) {
         startRecordBtn.addEventListener('click', startSpeechRecognition);
     }
+
+    //listener for the save to GitHub button
+    //document.getElementById('save-to-github-btn').addEventListener('click', saveCodeToGitHub);
+   window.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('save-to-github-btn').addEventListener('click', () => saveCodeToGitHub());
+});
+
+
+ /*   const saveToGithubButton = document.getElementById('save-to-github-btn');
+    if (saveToGithubButton) {
+        saveToGithubButton.addEventListener('click', function () {
+            console.log('Save Button clicked');
+            saveCodeToGitHub(); // Call the saveCodeToGitHub function directly
+        });
+    }*/
 
 
 });

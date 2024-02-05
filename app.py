@@ -78,6 +78,11 @@ router = APIRouter()
 
 @app.get("/login/github")
 async def login_via_github(request: Request):
+    """
+    Function to handle github login once user press the login button
+    :param request:
+    :return:
+    """
     # Generate the OAuth state
     state = secrets.token_urlsafe(32)
     request.session['oauth_state'] = state
@@ -97,22 +102,33 @@ async def login_via_github(request: Request):
 
 @app.route('/auth/github/callback')
 async def authorize(request: Request):
+    """
+    Function to handle the OAuth callback and exchange the code for a token
+    :param request:
+    :return:
+    """
     # Handle the OAuth callback and exchange the code for a token
     try:
         token = await oauth.github.authorize_access_token(request)
         request.state.session['auth_token'] = token['access_token']
         # Process the token (e.g., create a user session)
         # Redirect the user to a target page after successful authentication
-        log.info("Successfully authenticated with GitHub")
+        log.info("Successfully authenticated with GitHub redirecting to home page")
         return RedirectResponse(url='/')
     except Exception as e:
         # Log error and handle the failure (e.g., redirect to an error page)
-        log.error(f"Error in OAuth callback: {e}")  # Consider using a proper logging mechanism
+        log.error(f"Error in OAuth callback: {e}")
         return RedirectResponse(url='/error-page')
 
 
 @app.get("/login-error")
 async def login_error(request: Request, message: str):
+    """
+    Function to handle errors with logins
+    :param request:
+    :param message:
+    :return:
+    """
     # Display an error message or render a template with the error
     log.error(f"Login error: {message}")
     return JSONResponse(content={"error": message}, status_code=400)
@@ -120,6 +136,11 @@ async def login_error(request: Request, message: str):
 
 @app.get("/logout")
 async def logout(request: Request):
+    """
+    Function to logout from Github
+    :param request:
+    :return:
+    """
     # Clear Redis session data
     log.info("Performing logout.")
     session_id = request.cookies.get('session_id')
@@ -142,26 +163,88 @@ async def authenticated(request: Request):
     return JSONResponse({'message': 'Successfully authenticated with GitHub'})
 
 
-def create_or_update_github_file(file: GitHubFile):
-    url = f"https://api.github.com/repos/{file.repository}/contents/{file.filename}"
+# @app.post("/save-to-github/{username}/{repository}")
+# async def save_to_github(repository: str, request: Request, file: GitHubFile):
+#     # Check if the user is authenticated and has an access token
+#     log.info("Starting save to github route")
+#     if 'auth_token' not in request.state.session:
+#         log.info("auth token not in session, raising exception")
+#         raise HTTPException(status_code=401, detail="Not authenticated with GitHub")
+#     # Retrieve the access token from the session
+#     log.info("Retrieving access token from the session")
+#     access_token = request.state.session['auth_token']
+#
+#     # Construct the full repository name and the URL for the GitHub API call
+#     #full_repo = f"{username}/{repository}"  # Combine username and repository
+#     full_repo = f"{file.username}/{repository}"  # Combine username and repository changed this to tkae parameters
+#     url = f"https://api.github.com/repos/{full_repo}/contents/{file.filename}"
+#
+#     # Prepare the data for the GitHub API call
+#     data = {
+#         "message": f"Update {file.filename}",
+#         "content": base64.b64encode(file.content.encode()).decode("utf-8")
+#     }
+#
+#     # Set the headers, including the Authorization header with the OAuth token
+#     headers = {
+#         "Authorization": f"token {access_token}",
+#         #"Accept": "application/vnd.github+json"
+#         "Accept": "application/vnd.github.v3+json" #changed this
+#     }
+#
+#     # Make the PUT request to the GitHub API
+#     log.info(f"Making a PUT request to the GitHub API for {url}")
+#     response = requests.put(url, json=data, headers=headers)
+#
+#     # Check the response status code
+#     if response.status_code not in [200, 201]:
+#         raise HTTPException(status_code=response.status_code, detail=response.json())
+#
+#     # Return the JSON response from GitHub
+#     log.info(f"Successfully saved to GitHub")
+#     return response.json()
+
+@app.post("/save-to-github/{username}/{repository}")
+async def save_to_github(repository: str, request: Request, file: GitHubFile):
+    log.info("Starting save to github route")
+
+    if 'auth_token' not in request.state.session:
+        log.info("auth token not in session, raising exception")
+        raise HTTPException(status_code=401, detail="Not authenticated with GitHub")
+
+    log.info("Retrieving access token from the session")
+    access_token = request.state.session['auth_token']
+
+    full_repo = f"{file.username}/{repository}"
+    url = f"https://api.github.com/repos/{full_repo}/contents/{file.filename}"
+
+    # Log the received file object
+    log.debug(
+        f"Received file object: filename={file.filename}, content={file.content[:30]}...")  # Log first 30 chars of content
+
+    encoded_content = base64.b64encode(file.content.encode()).decode("utf-8")
     data = {
         "message": f"Update {file.filename}",
-        "content": base64.b64encode(file.content.encode()).decode("utf-8")
+        "content": encoded_content
     }
+
+    # Log the prepared data dictionary
+    log.debug(f"Prepared data for GitHub API call: {data}")
+
     headers = {
-        "Authorization": f"token {file.token}",
+        "Authorization": f"token {access_token}",
         "Accept": "application/vnd.github.v3+json"
     }
+
+    log.info(f"Making a PUT request to the GitHub API for {url}")
     response = requests.put(url, json=data, headers=headers)
+
     if response.status_code not in [200, 201]:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response.json())
+        log.error(f"GitHub API call failed: status_code={response.status_code}, detail={response.json()}")
+        raise HTTPException(status_code=response.status_code, detail=response.json())
+
+    log.info("Successfully saved to GitHub")
     return response.json()
-
-
-@router.post("/save-to-github")
-async def save_to_github(file: GitHubFile):
-    return create_or_update_github_file(file)
-
 
 # Add this router to your FastAPI app
 app.include_router(router)
@@ -169,6 +252,11 @@ app.include_router(router)
 
 @app.get("/debug/session")
 async def debug_session(request: Request):
+    """
+    Function to debug the session data
+    :param request: request object
+    :return:  dictionary of session data
+    """
     session_id = request.cookies.get('session_id')
     if session_id:
         session_data = redis_client.get(session_id)
@@ -300,6 +388,11 @@ async def gpt_exception_handler(request: Request, exc: GPTException):
 
 @app.post("/send_feedback/")
 async def send_feedback(feedback_data: FeedbackModel):
+    """
+    Function to receive feedback from the user and log it.
+    :param feedback_data:
+    :return:
+    """
     # Log feedback
     log.info(f"Received feedback: {feedback_data.feedback} for response ID: {feedback_data.responseId}")
 
@@ -307,9 +400,3 @@ async def send_feedback(feedback_data: FeedbackModel):
     # Note: GPT-4 doesn't have a direct mechanism to improve based on this feedback
 
     return {"message": "Feedback received"}
-
-
-@app.get("/some-success-page")
-async def some_success_page():
-    log.info("Successfully authenticated with GitHub")
-    return {"message": "Successfully authenticated with GitHub"}

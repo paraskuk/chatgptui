@@ -16,6 +16,8 @@ cyclonedx-python-lib==4.0.1
 dataclasses-json==0.5.9
 defusedxml==0.7.1
 distro==1.8.0
+dnspython==2.5.0
+email-validator==2.1.0.post1
 fastapi==0.109.2
 filelock==3.12.2
 flake8==6.0.0

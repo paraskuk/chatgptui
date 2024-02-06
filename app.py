@@ -181,10 +181,16 @@ async def save_to_github(repository: str, request: Request, file: GitHubFile):
     # Log the received file object
     log.debug(f"Received file object: filename={file.filename}, content preview={file.content[:30]}...")
 
-    encoded_content = base64.b64encode(file.content.encode()).decode("utf-8")
+    # encoded_content = base64.b64encode(file.content.encode()).decode("utf-8")
+    # data = {
+    #     "message": file.message,
+    #     "content": encoded_content,
+    # }
+
+    decoded_content = base64.b64decode(file.content.encode()).decode("utf-8")
     data = {
-        "message": file.message,
-        "content": encoded_content,
+               "message": file.message,
+               "content": base64.b64encode(decoded_content.encode()).decode("utf-8"),
     }
 
     if file.committer:  # If committer info is provided, include it

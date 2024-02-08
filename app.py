@@ -1,3 +1,4 @@
+####################### START OF IMPORTS SECTION #############
 import openai
 import os
 import time
@@ -31,7 +32,7 @@ from starlette.requests import Request
 import uuid
 import json
 
-#######################end of imports#######################################
+#######################END OF IMPORTS SECTION#######################################
 
 #####Object Instantiation##################################################
 
@@ -163,7 +164,6 @@ async def authenticated(request: Request):
     return JSONResponse({'message': 'Successfully authenticated with GitHub'})
 
 
-
 @app.post("/save-to-github/{username}/{repository}")
 async def save_to_github(repository: str, request: Request, file: GitHubFile):
     log.info("Starting save to github route")
@@ -189,8 +189,8 @@ async def save_to_github(repository: str, request: Request, file: GitHubFile):
 
     decoded_content = base64.b64decode(file.content.encode()).decode("utf-8")
     data = {
-               "message": file.message,
-               "content": base64.b64encode(decoded_content.encode()).decode("utf-8"),
+        "message": file.message,
+        "content": base64.b64encode(decoded_content.encode()).decode("utf-8"),
     }
 
     if file.committer:  # If committer info is provided, include it
@@ -213,6 +213,7 @@ async def save_to_github(repository: str, request: Request, file: GitHubFile):
 
     log.info("Successfully saved to GitHub")
     return response.json()
+
 
 # Add this router to your FastAPI app
 app.include_router(router)
@@ -358,8 +359,8 @@ async def gpt_exception_handler(request: Request, exc: GPTException):
 async def send_feedback(feedback_data: FeedbackModel):
     """
     Function to receive feedback from the user and log it.
-    :param feedback_data:
-    :return:
+    :param feedback_data: Instance of FeedbackModel
+    :return: Dictionary with message indicating feedback received
     """
     # Log feedback
     log.info(f"Received feedback: {feedback_data.feedback} for response ID: {feedback_data.responseId}")

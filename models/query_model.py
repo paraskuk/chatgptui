@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, EmailStr
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
+from fastapi import FastAPI, Path, Query
 import uuid
 import redis
 import json
@@ -28,11 +29,10 @@ class Committer(BaseModel):
 class GitHubFile(BaseModel):
     content: str = Field(..., description="Content of the file")
     filename: str = Field(..., description="Filename including extension")
-    repository: str = "test-repo-for-app"
-    username: str = "paraskuk"
-    message: str = "test commit"
-    committer: dict = None
-    # sha: str = None
+    repository: str = Field(default="test-repo-for-app", description="Repository name for github")
+    username: str = Field(..., description="Username of the repository owner in github")
+    message: str
+    committer: dict
 
 
 class RedisSessionMiddleware(BaseHTTPMiddleware):

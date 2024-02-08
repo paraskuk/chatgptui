@@ -38,13 +38,19 @@
         <label for="filename">Filename:</label><br>
         <input type="text" id="filename" name="filename" placeholder="Enter filename including extension"><br>
 
+        <label for="username">GitHub Username:</label><br>
+        <input type="text" id="username" name="username" placeholder="Enter username"><br>
+
+        <label for="repository">GitHub Repo Name:</label><br>
+        <input type="text" id="repository" name="repository" placeholder="Enter repository"><br>
+
         <label for="commit-message">Commit Message:</label><br>
         <input type="text" id="commit-message" name="commit_message" placeholder="Enter commit message"><br>
 
-        <label for="committer-name">Committer Name (optional):</label><br>
+        <label for="committer-name">Committer Name:</label><br>
         <input type="text" id="committer-name" name="committer_name" placeholder="Enter committer's name"><br>
 
-        <label for="committer-email">Committer Email (optional):</label><br>
+        <label for="committer-email">Committer Email:</label><br>
         <input type="email" id="committer-email" name="committer_email" placeholder="Enter committer's email"><br>
     <hr>
 <!-- Save to GitHub button that sends to a repo -->
@@ -80,9 +86,7 @@
 <button id="login-github-btn">Login with GitHub</button>
 <!-- Logout button for GitHub -->
 <button id="logout-github-btn">Logout from GitHub</button>
-<!-- Save to GitHub button that sends to a repo -->
-<!--?
--->
+
 <!-- Message container to show messages once user saves to GitHub -->
 <div id="message-container"></div>
 <!-- Message to show if authenticated with GitHub -->
@@ -93,7 +97,6 @@
 
 </body>
 <!--?This leverages the JS code on the index.js file -->
-
 <script src="/templates/index.js"></script>
 
 </html>

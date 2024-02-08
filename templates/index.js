@@ -1,7 +1,3 @@
-// Function to save code to GitHub by getting it from the answer element
-
-
-
 // Function to display messages in the UI for GitHub save functionality
 function displayMessage(message, type) {
     const messageElement = document.getElementById('message-container');
@@ -298,46 +294,6 @@ function startDictation() {
 
 /**          Speech Recognition Ends here          **/
 
-//this works without the additional gitub form
-/*function saveCodeToGitHub() {
-    console.log('Save to GitHub button clicked.')
-    const codeContent = document.getElementById('answer').innerText;
-    // Separate username and repository for the fetch call
-    const username = 'paraskuk'; // Username of the GitHub account
-    const repository = 'test-repo-for-app'; // Repository name
-    const filename = 'code.py'; // The name of the file in the repository
-
-    // Format the URL with username and repository name
-    const url = `/save-to-github/${encodeURIComponent(username)}/${encodeURIComponent(repository)}`;
-    console.log("URL is : ", url);
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // Include the OAuth token in the request if needed
-            'Authorization': `Bearer ${sessionStorage.getItem('githubToken')}`
-        },
-        body: JSON.stringify({
-            content: codeContent,
-            filename: filename
-            // The repository is now part of the URL, not the body
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayMessage('File saved to GitHub successfully.', 'success');
-        })
-        .catch(error => {
-            displayMessage(`Error saving file to GitHub: ${error}`, 'error');
-        });
-    console.log("Ending saveCodeToGitHub function.");
-}*/
-
 //github form related function
 function saveCodeToGitHub() {
     console.log('Save to GitHub button clicked.');
@@ -352,27 +308,36 @@ function saveCodeToGitHub() {
     const filename = document.getElementById('filename').value; // Retrieve the filename from the form
 
     // Define the GitHub username, repository, and filename
-    const username = 'paraskuk'; // Username of the GitHub account
-    const repository = 'test-repo-for-app'; // Repository name
+    const username = document.getElementById('username').value; // Username of the GitHub account
+    const repository = document.getElementById('repository').value; // Repository name
+    // const username = 'paraskuk'; // Username of the GitHub account
+    // const repository = 'test-repo-for-app'; // Repository name
     //const filename = 'code.py'; // Assume you want to create or update this file
+
+        if (!username || !repository || !filename || !message || !committerName || !committerEmail) {
+        alert('All fields are required.');
+        return; // Stop execution
+    }
 
     // Format the URL for the API call
     const url = `/save-to-github/${encodeURIComponent(username)}/${encodeURIComponent(repository)}`;
 
     // Prepare the request payload including new fields
+    // Create command for GitHub requires all the following fields
     const payload = {
         content: codeContent, // Content of the file, base64 encoded
         filename: filename, // Filename including extension
         message: message, // Commit message
+        committer: committerName && committerEmail ? { name: committerName, email: committerEmail } : undefined
     };
 
     // Optionally include committer details if provided
-    if (committerName && committerEmail) {
+ /*   if (committerName && committerEmail) {
         payload.committer = {
             name: committerName,
             email: committerEmail
         };
-    }
+    }*/
 
     // Perform the fetch call to the backend
     fetch(url, {

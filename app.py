@@ -165,9 +165,10 @@ async def authenticated(request: Request):
 
 
 @app.post("/save-to-github/{username}/{repository}")
-async def save_to_github(repository: str, request: Request, file: GitHubFile):
+async def save_to_github(repository: str, username:str, request: Request, file: GitHubFile):
     log.info("Starting save to github route")
-
+    #potentially remove the repository parameter and add file.repository
+    log.info(f"repo value is {repository} username value is {username}")
     if 'auth_token' not in request.state.session:
         log.info("auth token not in session, raising exception")
         raise HTTPException(status_code=401, detail="Not authenticated with GitHub")

@@ -13,7 +13,7 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=T
 
 class QueryModel(BaseModel):
     user_input: str = Field(min_length=1, max_length=2000)
-    model: str = "gpt-4"  # Default model
+    model: str = "gpt-4-0125-preview"  # Default model is gpt-4
 
 
 class FeedbackModel(BaseModel):

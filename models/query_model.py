@@ -12,21 +12,33 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=T
 
 
 class QueryModel(BaseModel):
+    """
+    Data class Model for query input sets max length of user_input to 2000
+    """
     user_input: str = Field(min_length=1, max_length=2000)
     model: str = "gpt-4-0125-preview"  # Default model is gpt-4
 
 
 class FeedbackModel(BaseModel):
+    """
+    Data class Model for feedback
+    """
     responseId: str
     feedback: str
 
 
 class Committer(BaseModel):
+    """
+    Data class Model for committer
+    """
     name: str
     email: EmailStr
 
 
 class GitHubFile(BaseModel):
+    """
+    Data class Model for file to be uploaded to GitHub
+    """
     content: str = Field(..., description="Content of the file")
     filename: str = Field(..., description="Filename including extension")
     repository: str = Field(default="test-repo-for-app", description="Repository name for github")
@@ -36,6 +48,9 @@ class GitHubFile(BaseModel):
 
 
 class RedisSessionMiddleware(BaseHTTPMiddleware):
+    """
+
+    """
     async def dispatch(self, request: Request, call_next):
         # Retrieve or create a new session ID
         from app import log

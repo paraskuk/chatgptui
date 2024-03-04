@@ -80,9 +80,9 @@ router = APIRouter()
 @app.get("/login/github")
 async def login_via_github(request: Request):
     """
-    Function to handle github login once user press the login button
-    :param request:
-    :return:
+    Function to handle GitHub login once user press the login button
+    :param request: request object
+    :return: either oauth.github.authorize_redirect or JSONResponse object
     """
     # Generate the OAuth state
     state = secrets.token_urlsafe(32)
@@ -105,8 +105,8 @@ async def login_via_github(request: Request):
 async def authorize(request: Request):
     """
     Function to handle the OAuth callback and exchange the code for a token
-    :param request:
-    :return:
+    :param request: request object
+    :return: RedirectResponse object
     """
     # Handle the OAuth callback and exchange the code for a token
     try:
@@ -126,9 +126,9 @@ async def authorize(request: Request):
 async def login_error(request: Request, message: str):
     """
     Function to handle errors with logins
-    :param request:
-    :param message:
-    :return:
+    :param request:request object
+    :param message: str, error message
+    :return: JSONResponse object
     """
     # Display an error message or render a template with the error
     log.error(f"Login error: {message}")
@@ -140,7 +140,7 @@ async def logout(request: Request):
     """
     Function to logout from Github
     :param request:
-    :return:
+    :return:RedirectResponse Object
     """
     # Clear Redis session data
     log.info("Performing logout.")

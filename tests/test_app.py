@@ -63,20 +63,3 @@ async def test_http_exception_handler(status_code: int, detail: Union[str, dict]
     result = await http_exception_handler(exc)
     assert result == expected_result
 
-# @pytest.mark.parametrize(
-#     "user_input,expected_status_code",
-#     [
-#         ("What is the capital of France?", 200),
-#         ("", 400),  # Invalid query
-#     ],
-# )
-# def test_ask_gpt4_route(user_input: str, expected_status_code: int):
-#     query = QueryModel(user_input=user_input)
-#     response = client.post("/ask_gpt4/", json=query.dict())
-#
-#     assert response.status_code == expected_status_code
-#
-#     if expected_status_code == 200:
-#         assert "response" in response.json()
-#     else:
-#         assert "error" in response.json()

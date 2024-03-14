@@ -137,8 +137,9 @@ async def login_error(request: Request, message: str):
 
 @app.get("/logout")
 async def logout(request: Request):
+
     """
-    Function to logout from Github
+    Function to log out from GitHub
     :param request:
     :return:RedirectResponse Object
     """

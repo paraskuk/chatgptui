@@ -1,5 +1,4 @@
 name: Python application Setup - Chat GPT
-
 on:
   push:
     branches: [ "master" ]

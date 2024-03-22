@@ -16,7 +16,7 @@ class QueryModel(BaseModel):
     Data class Model for query input sets max length of user_input to 2000
     """
     user_input: str = Field(min_length=1, max_length=2000)
-    model: str = "gpt-4-0125-preview"  # Default model is gpt-4
+    model: str = "gpt-4"  # Default model is gpt-4
 
 
 class FeedbackModel(BaseModel):

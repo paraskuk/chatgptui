@@ -24,3 +24,11 @@ def test_client() -> TestClient:
     """
     with TestClient(app) as client:
         yield client
+
+@pytest.fixture
+def test_app():
+    """
+    Fixture to return the FastAPI app instance
+    :return: app
+    """
+    return app

@@ -137,7 +137,6 @@ async def login_error(request: Request, message: str):
 
 @app.get("/logout")
 async def logout(request: Request):
-
     """
     Function to log out from GitHub
     :param request:
@@ -166,9 +165,9 @@ async def authenticated(request: Request):
 
 
 @app.post("/save-to-github/{username}/{repository}")
-async def save_to_github(repository: str, username:str, request: Request, file: GitHubFile):
+async def save_to_github(repository: str, username: str, request: Request, file: GitHubFile):
     log.info("Starting save to github route")
-    #potentially remove the repository parameter and add file.repository
+    # potentially remove the repository parameter and add file.repository
     log.info(f"repo value is {repository} username value is {username}")
     if 'auth_token' not in request.state.session:
         log.info("auth token not in session, raising exception")
@@ -250,6 +249,19 @@ async def index(request: Request):
         return http_exception_handler(exc)
 
 
+def create_client_moderation(query_params):
+    """
+        Function to create a client moderation request
+        :param query_params:
+        :param user_input: str, user input to be sent to the moderation API
+        :return: Moderation response
+        """
+    moderation_result = client.moderations.create(
+        input=query_params.user_input
+    )
+    return moderation_result
+
+
 def create_gpt4_completion(model: str, system_message: str, user_input: str) -> None or Optional[str]:
     """
     Function to create a GPT-4 completion request
@@ -293,9 +305,11 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
         )
 
         # Moderation API to evaluate the query
-        moderation_result = client.moderations.create(
-            input=query_params.user_input
-        )
+        moderation_result = create_client_moderation(query_params)
+
+        # moderation_result = client.moderations.create(
+        #     input=query_params.user_input
+        # )
 
         if not code_completion:
             raise HTTPException(status_code=500, detail="No response from the model for code completion.")
@@ -364,10 +378,10 @@ async def send_feedback(feedback_data: FeedbackModel):
     :param feedback_data: Instance of FeedbackModel
     :return: Dictionary with message indicating feedback received
     """
-    # Log feedback
+
     log.info(f"Received feedback: {feedback_data.feedback} for response ID: {feedback_data.responseId}")
 
-    # Here you can add logic to analyze feedback or store it for future improvements
-    # Note: GPT-4 doesn't have a direct mechanism to improve based on this feedback
-
     return {"message": "Feedback received"}
+
+
+

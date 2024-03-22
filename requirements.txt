@@ -65,6 +65,7 @@ pyflakes==3.0.1
 Pygments==2.15.1
 pyparsing==3.1.0
 pytest==7.4.0
+pytest-asyncio==0.23.5.post1
 pytest-cov==4.1.0
 PyYAML==6.0
 redis==5.0.1

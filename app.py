@@ -305,11 +305,11 @@ async def ask_gpt4(query_params: QueryModel) -> JSONResponse:
         )
 
         # Moderation API to evaluate the query
-        moderation_result = create_client_moderation(query_params)
+        # moderation_result = create_client_moderation(query_params)
 
-        # moderation_result = client.moderations.create(
-        #     input=query_params.user_input
-        # )
+        moderation_result = client.moderations.create(
+            input=query_params.user_input
+        )
 
         if not code_completion:
             raise HTTPException(status_code=500, detail="No response from the model for code completion.")
@@ -382,6 +382,3 @@ async def send_feedback(feedback_data: FeedbackModel):
     log.info(f"Received feedback: {feedback_data.feedback} for response ID: {feedback_data.responseId}")
 
     return {"message": "Feedback received"}
-
-
-

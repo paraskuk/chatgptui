@@ -10,8 +10,13 @@ This application is built using FastAPI for the API and JavaScript ,HTML and CSS
 - OpenAI API key
 - FastAPI
 - JavaScript
-- Redis
+- Redis Server
 - HTML, CSS
+- Chrome Browser
+- Install packages as outlined in the requirements.txt file
+- Get GitHub Client ID for your OAuth App
+- Get GitHub Client Secret for your OAuth App
+- Get Secret Session Key for your OAuth App
 
 ## Installation
 

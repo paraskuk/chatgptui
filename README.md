@@ -32,6 +32,9 @@ This application is built using FastAPI for the API and JavaScript ,HTML and CSS
 2. Navigate to `http://localhost:8000/` on your browser to access the application.
 3. Enter your query in the input field and click on the `Submit` button to generate a response.
 
+## Testing the Application with Curl
+`curl -X POST http://127.0.0.1:8000/ask_gpt4/ -H "Content-Type: application/json" -d "{\"user_input\": \"Create a function that adds 2 numbers\", \"model\": \"gpt-4\"}"`
+
 ## Note
 
 Make sure to set the `OPEN_AI_KEY` environment variable before running the application, as this is required for the OpenAI API to function properly.

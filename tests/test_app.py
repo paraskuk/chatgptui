@@ -127,3 +127,32 @@ async def test_redis_session_middleware():
         assert 'session_id' in response.cookies
 
         assert mock_set.called
+
+
+@pytest.mark.asyncio
+async def test_ask_gpt4_endpoint_gpt4():
+    """
+    Function to test the ask_gpt4 endpoint with AsyncClient
+    :return: boolean, True if the expected response is returned and matches the actual response from GPT-4
+    response is not necessary deterministic so the test might fail
+    """
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.post("/ask_gpt4/", json={
+            "model": "gpt-4",
+            "user_input": "What is the result of the python function sum([3,5])? Provide only the result with a "
+                          "single number only.For user level estimation and sentiment analysis estimation use only "
+                          "one word starting with a capital letter."
+        })
+
+    assert response.status_code == 200
+    response_data = response.json()
+
+    expected_response = (
+        "8\n\nUser Level Estimation: Beginner\n\nSentiment Analysis: Neutral"
+    )
+
+
+    assert response_data["response"] in expected_response
+
+
+

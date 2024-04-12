@@ -42,7 +42,7 @@ class GitHubFile(BaseModel):
     content: str = Field(..., description="Content of the file")
     filename: str = Field(..., description="Filename including extension")
     repository: str = Field(default="test-repo-for-app", description="Repository name for github")
-    username: str = Field(default=None, description="Username of the repository owner in github")
+    username: str = Field(default="paraskuk", description="Username of the repository owner in github")
     message: str
     committer: dict
 

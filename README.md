@@ -23,7 +23,7 @@ This application is built using FastAPI for the API and JavaScript ,HTML and CSS
 1. Clone the repository
 2. Install the required packages using `pip install -r requirements.txt`
 3. Set the `OPEN_AI_KEY` environment variable with your OpenAI API key.
-4. Setup Redis server on your machine as outlined here https://redis.io/docs/install/install-redis/ 
+4. Setup Redis server on your machine as outlined here https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-windows/
 
 
 ## Usage

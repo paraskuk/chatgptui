@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8000:80"
+    environment:
+      - OPEN_AI_KEY=${OPEN_AI_KEY}
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

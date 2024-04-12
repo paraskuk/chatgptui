@@ -199,7 +199,7 @@ function htmlDecode(input) {
 function displayError(message) {
     const answerElement = document.getElementById("answer");
     answerElement.textContent = message; // Use textContent for security
-    // If you have an error-specific styling, apply it here
+
 }
 
 
@@ -294,13 +294,13 @@ function startDictation() {
 
 /**          Speech Recognition Ends here          **/
 
-//github form related function
+//GitHub form related function
 function saveCodeToGitHub() {
     console.log('Save to GitHub button clicked.');
 
     // Existing code for getting the content
     const codeContent = btoa(document.getElementById('answer').innerText); // Base64 encode the content to match GitHub's requirement
-        //btoa(document.getElementById('answer').innerText);
+
     // New code to get additional inputs from the form
     const message = document.getElementById('commit-message').value;
     const committerName = document.getElementById('committer-name').value;
@@ -310,9 +310,6 @@ function saveCodeToGitHub() {
     // Define the GitHub username, repository, and filename
     const username = document.getElementById('username').value; // Username of the GitHub account
     const repository = document.getElementById('repository').value; // Repository name
-    // const username = 'paraskuk'; // Username of the GitHub account
-    // const repository = 'test-repo-for-app'; // Repository name
-    //const filename = 'code.py'; // Assume you want to create or update this file
 
         if (!username || !repository || !filename || !message || !committerName || !committerEmail) {
         alert('All fields are required.');
@@ -331,13 +328,6 @@ function saveCodeToGitHub() {
         committer: committerName && committerEmail ? { name: committerName, email: committerEmail } : undefined
     };
 
-    // Optionally include committer details if provided
- /*   if (committerName && committerEmail) {
-        payload.committer = {
-            name: committerName,
-            email: committerEmail
-        };
-    }*/
 
     // Perform the fetch call to the backend
     fetch(url, {
@@ -364,6 +354,9 @@ function saveCodeToGitHub() {
 
     console.log("Ending saveCodeToGitHub function.");
 }
+
+
+
 
 
 

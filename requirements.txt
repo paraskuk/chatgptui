@@ -16,7 +16,7 @@ cyclonedx-python-lib==4.0.1
 dataclasses-json==0.5.9
 defusedxml==0.7.1
 distro==1.8.0
-dnspython==2.5.0
+dnspython==2.6.1
 email-validator==2.1.0.post1
 fastapi==0.109.2
 filelock==3.12.2
@@ -27,7 +27,7 @@ h11==0.14.0
 html5lib==1.1
 httpcore==0.17.3
 httpx==0.24.1
-idna==3.4
+idna==3.7
 iniconfig==2.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.3

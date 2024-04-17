@@ -28,9 +28,12 @@ This application is built using FastAPI for the API and JavaScript ,HTML and CSS
 
 ## Usage
 1. Start Redis server with `sudo service redis-server start`
-2. Run the application using the command `uvicorn main:app --reload` on your IDE.
-2. Navigate to `http://localhost:8000/` on your browser to access the application.
-3. Enter your query in the input field and click on the `Submit` button to generate a response.
+2. On PyCharm Professional IDE, create a FastAPI configuration and run the application using the app.py script.
+3. The above configuration needs to have the OpenAI API key as well as the GitHub keys outlined in the requirements section.
+2. Navigate to `http://localhost:8000/` on your Google Chrome browser to access the application.
+3. Login to GitHub using the `Login with GitHub` button.
+4. Enter your query in the input field and click on the `Submit` button to generate a response.
+5. Click on the Mic button to use the speech-to-text feature and get a code completion from GPT-4.
 
 ## Testing the Application with Curl
 `curl -X POST http://127.0.0.1:8000/ask_gpt4/ -H "Content-Type: application/json" -d "{\"user_input\": \"Create a function that adds 2 numbers\", \"model\": \"gpt-4\"}"`

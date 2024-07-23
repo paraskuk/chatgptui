@@ -13,9 +13,9 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=T
 
 class QueryModel(BaseModel):
     """
-    Data class Model for query input sets max length of user_input to 2000
+    Data class Model for query input sets max length of user_input
     """
-    user_input: str = Field(min_length=1, max_length=2000)
+    user_input: str = Field(min_length=1, max_length=10000)
     model: str = "gpt-4o"  # Default model is gpt-4
 
 

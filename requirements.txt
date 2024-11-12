@@ -36,7 +36,7 @@ Jinja2==3.1.4
 jsonpatch==1.33
 jsonpointer==2.4
 langchain==0.2.11
-langchain-community==0.2.10
+langchain-community==0.2.19
 langchain-core==0.2.23
 langchain-text-splitters==0.2.1
 langchainplus-sdk==0.0.20

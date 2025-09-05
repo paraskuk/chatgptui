@@ -26,7 +26,36 @@ jobs:
         run: |
           uv venv .venv
           source .venv/bin/activate
+          
+          # Show current versions before update
+          echo "=== Current dependency versions ==="
+          uv pip list
+          
+          # Try different update strategies
+          echo "=== Attempting to update dependencies ==="
+          
+          # First, try to upgrade all packages to latest versions
           uv pip install --upgrade -r requirements.txt
+          
+          # Generate new requirements with latest versions
+          uv pip freeze > requirements_new.txt
+          
+          # Show what changed
+          echo "=== Comparing old vs new requirements ==="
+          if command -v diff >/dev/null 2>&1; then
+            diff requirements.txt requirements_new.txt || true
+          else
+            echo "Old requirements.txt:"
+            head -10 requirements.txt
+            echo "New requirements:"
+            head -10 requirements_new.txt
+          fi
+          
+          # Replace old requirements with new ones
+          mv requirements_new.txt requirements.txt
+          
+          echo "=== Final dependency versions ==="
+          uv pip list
 
       - name: Check for changes and push to branch
         run: |

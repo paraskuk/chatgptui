@@ -23,6 +23,12 @@ jobs:
       - name: Install uv
         run: pip install uv
 
+      - name: Create virtual environment
+        run: uv venv .venv
+
+      - name: Activate virtual environment
+        run: source .venv/bin/activate
+
       - name: Update dependencies with uv
         run: uv pip install --upgrade -r requirements.txt
 

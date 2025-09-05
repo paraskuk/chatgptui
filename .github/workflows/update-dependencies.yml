@@ -2,7 +2,7 @@ name: Update Python Dependencies
 
 on:
   schedule:
-    - cron: '50 18 * * *' # Every day at 18:40 UTC
+    - cron: '56 17 * * *' # Every day at 18:50 London time (BST, UTC+1)
   workflow_dispatch: # Allow manual trigger
 
 jobs:

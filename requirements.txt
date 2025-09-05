@@ -77,7 +77,7 @@ pytest-cov==4.1.0
 python-dotenv==1.1.1
 PyYAML==6.0
 redis==5.0.1
-requests==2.32.3
+requests==2.32.4
 requests-toolbelt==1.0.0
 rich==13.4.2
 six==1.16.0

@@ -1,5 +1,6 @@
 import json
 import uuid
+import os
 
 import pytest
 from fastapi.testclient import TestClient
@@ -36,6 +37,12 @@ class MockModerationResponse:
         return {
             "flagged": self._flagged
         }
+
+
+pytestmark = pytest.mark.skipif(
+    not os.getenv("OPENAI_API_KEY"),
+    reason="OPENAI_API_KEY not set; skipping OpenAI-dependent tests."
+)
 
 
 @pytest.mark.asyncio
@@ -153,6 +160,3 @@ async def test_ask_gpt4_endpoint_gpt4():
 
 
     assert response_data["response"] in expected_response
-
-
-

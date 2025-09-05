@@ -7,9 +7,12 @@ on:
 
 jobs:
   update-deps:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout code for update and test dependeabots
         uses: actions/checkout@v4
 
       - name: Set up Python

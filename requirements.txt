@@ -40,7 +40,6 @@ langchain==0.3.27
 langchain-community==0.3.27
 langchain-core==0.3.75
 langchain-text-splitters==0.3.11
-langchainplus-sdk==0.0.20
 langsmith==0.4.25
 markdown-it-py==3.0.0
 MarkupSafe==2.1.2

@@ -1,0 +1,33 @@
+name: Update Python Dependencies
+
+on:
+  schedule:
+    - cron: '40 18 * * *' # Every day at 18:40 UTC
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Update dependencies with uv
+        run: uv pip install --upgrade -r requirements.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Auto-update dependencies via uv"
+          title: "Auto-update dependencies"
+          body: "This PR updates dependencies in requirements.txt via uv."
+          branch: "auto/update-deps"
+          base: "main"

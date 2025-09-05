@@ -9,7 +9,6 @@ jobs:
   update-deps:
     permissions:
       contents: write
-      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code for update and test dependeabots
@@ -23,34 +22,29 @@ jobs:
       - name: Install uv
         run: pip install uv
 
-      - name: Create virtual environment
-        run: uv venv .venv
+      - name: Create virtual environment and update dependencies
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install --upgrade -r requirements.txt
 
-      - name: Activate virtual environment
-        run: source .venv/bin/activate
-
-      - name: Update dependencies with uv
-        run: uv pip install --upgrade -r requirements.txt
-
-      - name: Create and Push Branch
+      - name: Check for changes and push to branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b auto/update-deps
+          
+          # Check if there are any changes
+          if git diff --quiet requirements.txt; then
+            echo "No dependency updates available"
+            exit 0
+          fi
+          
+          # Create and push branch with updates
+          BRANCH_NAME="auto/update-deps-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
           git add requirements.txt
-          git commit -m "Auto-update dependencies via uv" || echo "No changes to commit"
-          git push origin auto/update-deps || echo "No changes to push"
-
-      - name: Create Pull Request
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const pr = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: "Auto-update dependencies",
-              head: "auto/update-deps",
-              base: "master",
-              body: "This PR updates dependencies in requirements.txt via uv."
-            });
-            console.log(`PR created: ${pr.data.html_url}`)
+          git commit -m "Auto-update dependencies via uv"
+          git push origin "$BRANCH_NAME"
+          
+          echo "Dependencies updated and pushed to branch: $BRANCH_NAME"
+          echo "You can now manually create a PR from this branch to master"

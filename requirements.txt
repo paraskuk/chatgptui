@@ -19,7 +19,7 @@ cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
 defusedxml==0.7.1
 distro==1.9.0
-dnspython==2.7.0
+dnspython==2.8.0
 email-validator==2.3.0
 fastapi==0.116.1
 filelock==3.19.1
@@ -42,7 +42,7 @@ langchain==0.3.27
 langchain-community==0.3.29
 langchain-core==0.3.75
 langchain-text-splitters==0.3.11
-langsmith==0.4.25
+langsmith==0.4.26
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.2

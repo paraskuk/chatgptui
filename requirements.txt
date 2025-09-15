@@ -35,14 +35,14 @@ idna==3.10
 iniconfig==2.1.0
 itsdangerous==2.2.0
 jinja2==3.1.6
-jiter==0.10.0
+jiter==0.11.0
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.27
 langchain-community==0.3.29
 langchain-core==0.3.76
 langchain-text-splitters==0.3.11
-langsmith==0.4.27
+langsmith==0.4.28
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.2
@@ -100,4 +100,4 @@ urllib3==2.5.0
 uvicorn==0.35.0
 webencodings==0.5.1
 yarl==1.20.1
-zstandard==0.24.0
+zstandard==0.25.0

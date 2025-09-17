@@ -5,7 +5,7 @@ annotated-types==0.7.0
 anyio==4.10.0
 async-timeout==5.0.1
 attrs==25.3.0
-authlib==1.6.3
+authlib==1.6.4
 boolean-py==5.0
 cachecontrol==0.14.3
 certifi==2025.8.3
@@ -14,7 +14,7 @@ charset-normalizer==3.4.3
 click==8.2.1
 colorama==0.4.6
 coverage==7.10.6
-cryptography==45.0.7
+cryptography==46.0.1
 cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
 defusedxml==0.7.1

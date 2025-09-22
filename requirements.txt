@@ -13,7 +13,7 @@ cffi==2.0.0
 charset-normalizer==3.4.3
 click==8.3.0
 colorama==0.4.6
-coverage==7.10.6
+coverage==7.10.7
 cryptography==46.0.1
 cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
@@ -21,7 +21,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.116.2
+fastapi==0.117.1
 filelock==3.19.1
 flake8==7.3.0
 frozenlist==1.7.0
@@ -75,7 +75,7 @@ pydantic-core==2.33.2
 pydantic-settings==2.10.1
 pyflakes==3.4.0
 pygments==2.19.2
-pyparsing==3.2.4
+pyparsing==3.2.5
 pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-cov==7.0.0

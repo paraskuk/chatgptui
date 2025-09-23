@@ -2,7 +2,7 @@ aiohappyeyeballs==2.6.1
 aiohttp==3.12.15
 aiosignal==1.4.0
 annotated-types==0.7.0
-anyio==4.10.0
+anyio==4.11.0
 async-timeout==5.0.1
 attrs==25.3.0
 authlib==1.6.4
@@ -13,7 +13,7 @@ cffi==2.0.0
 charset-normalizer==3.4.3
 click==8.3.0
 colorama==0.4.6
-coverage==7.10.6
+coverage==7.10.7
 cryptography==46.0.1
 cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
@@ -21,7 +21,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.116.2
+fastapi==0.117.1
 filelock==3.19.1
 flake8==7.3.0
 frozenlist==1.7.0
@@ -42,7 +42,7 @@ langchain==0.3.27
 langchain-community==0.3.29
 langchain-core==0.3.76
 langchain-text-splitters==0.3.11
-langsmith==0.4.29
+langsmith==0.4.30
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.2
@@ -55,7 +55,7 @@ multidict==6.6.4
 mypy-extensions==1.1.0
 numexpr==2.12.1
 numpy==2.3.3
-openai==1.108.1
+openai==1.109.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.3
 packageurl-python==0.17.5
@@ -75,7 +75,7 @@ pydantic-core==2.33.2
 pydantic-settings==2.10.1
 pyflakes==3.4.0
 pygments==2.19.2
-pyparsing==3.2.4
+pyparsing==3.2.5
 pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-cov==7.0.0
@@ -97,7 +97,7 @@ typing-extensions==4.15.0
 typing-inspect==0.9.0
 typing-inspection==0.4.1
 urllib3==2.5.0
-uvicorn==0.36.0
+uvicorn==0.37.0
 webencodings==0.5.1
 yarl==1.20.1
 zstandard==0.25.0

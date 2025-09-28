@@ -39,13 +39,13 @@ jiter==0.11.0
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.27
-langchain-community==0.3.29
+langchain-community==0.3.30
 langchain-core==0.3.76
 langchain-text-splitters==0.3.11
-langsmith==0.4.30
+langsmith==0.4.31
 license-expression==30.4.4
 markdown-it-py==4.0.0
-markupsafe==3.0.2
+markupsafe==3.0.3
 marshmallow==3.26.1
 marshmallow-enum==1.5.1
 mccabe==0.7.0
@@ -53,9 +53,9 @@ mdurl==0.1.2
 msgpack==1.1.1
 multidict==6.6.4
 mypy-extensions==1.1.0
-numexpr==2.12.1
+numexpr==2.13.0
 numpy==2.3.3
-openai==1.109.0
+openai==1.109.1
 openapi-schema-pydantic==1.2.4
 orjson==3.11.3
 packageurl-python==0.17.5
@@ -72,7 +72,7 @@ pycodestyle==2.14.0
 pycparser==2.23
 pydantic==2.11.9
 pydantic-core==2.33.2
-pydantic-settings==2.10.1
+pydantic-settings==2.11.0
 pyflakes==3.4.0
 pygments==2.19.2
 pyparsing==3.2.5
@@ -80,7 +80,7 @@ pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-cov==7.0.0
 python-dotenv==1.1.1
-pyyaml==6.0.2
+pyyaml==6.0.3
 redis==6.4.0
 requests==2.32.5
 requests-toolbelt==1.0.0

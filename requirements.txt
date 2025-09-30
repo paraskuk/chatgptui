@@ -21,7 +21,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.117.1
+fastapi==0.118.0
 filelock==3.19.1
 flake8==7.3.0
 frozenlist==1.7.0
@@ -53,9 +53,9 @@ mdurl==0.1.2
 msgpack==1.1.1
 multidict==6.6.4
 mypy-extensions==1.1.0
-numexpr==2.13.0
+numexpr==2.13.1
 numpy==2.3.3
-openai==1.109.1
+openai==2.0.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.3
 packageurl-python==0.17.5

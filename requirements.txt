@@ -40,9 +40,9 @@ jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.27
 langchain-community==0.3.30
-langchain-core==0.3.77
+langchain-core==0.3.78
 langchain-text-splitters==0.3.11
-langsmith==0.4.31
+langsmith==0.4.32
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3
@@ -55,7 +55,7 @@ multidict==6.6.4
 mypy-extensions==1.1.0
 numexpr==2.13.1
 numpy==2.3.3
-openai==2.0.1
+openai==2.1.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.3
 packageurl-python==0.17.5

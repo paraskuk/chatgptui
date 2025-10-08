@@ -21,8 +21,8 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.118.0
-filelock==3.19.1
+fastapi==0.118.2
+filelock==3.20.0
 flake8==7.3.0
 frozenlist==1.8.0
 greenlet==3.2.4
@@ -39,7 +39,7 @@ jiter==0.11.0
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.27
-langchain-community==0.3.30
+langchain-community==0.3.31
 langchain-core==0.3.78
 langchain-text-splitters==0.3.11
 langsmith==0.4.33
@@ -50,7 +50,7 @@ marshmallow==3.26.1
 marshmallow-enum==1.5.1
 mccabe==0.7.0
 mdurl==0.1.2
-msgpack==1.1.1
+msgpack==1.1.2
 multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.13.1
@@ -64,9 +64,9 @@ pip==25.2
 pip-api==0.0.34
 pip-audit==2.9.0
 pip-requirements-parser==32.0.1
-platformdirs==4.4.0
+platformdirs==4.5.0
 pluggy==1.6.0
-propcache==0.4.0
+propcache==0.3.2
 py-serializable==2.1.0
 pycodestyle==2.14.0
 pycparser==2.23

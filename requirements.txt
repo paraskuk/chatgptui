@@ -21,7 +21,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.118.3
+fastapi==0.119.0
 filelock==3.20.0
 flake8==7.3.0
 frozenlist==1.8.0
@@ -30,7 +30,7 @@ h11==0.16.0
 html5lib==1.1
 httpcore==1.0.9
 httpx==0.28.1
-httpx-sse==0.4.2
+httpx-sse==0.4.3
 idna==3.10
 iniconfig==2.1.0
 itsdangerous==2.2.0

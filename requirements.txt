@@ -10,7 +10,7 @@ boolean-py==5.0
 cachecontrol==0.14.3
 certifi==2025.10.5
 cffi==2.0.0
-charset-normalizer==3.4.3
+charset-normalizer==3.4.4
 click==8.3.0
 colorama==0.4.6
 coverage==7.10.7
@@ -21,7 +21,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.118.3
+fastapi==0.119.0
 filelock==3.20.0
 flake8==7.3.0
 frozenlist==1.8.0
@@ -30,8 +30,8 @@ h11==0.16.0
 html5lib==1.1
 httpcore==1.0.9
 httpx==0.28.1
-httpx-sse==0.4.2
-idna==3.10
+httpx-sse==0.4.3
+idna==3.11
 iniconfig==2.1.0
 itsdangerous==2.2.0
 jinja2==3.1.6
@@ -53,7 +53,7 @@ mdurl==0.1.2
 msgpack==1.1.2
 multidict==6.7.0
 mypy-extensions==1.1.0
-numexpr==2.13.1
+numexpr==2.14.1
 numpy==2.3.3
 openai==2.3.0
 openapi-schema-pydantic==1.2.4
@@ -70,8 +70,8 @@ propcache==0.4.1
 py-serializable==2.1.0
 pycodestyle==2.14.0
 pycparser==2.23
-pydantic==2.12.0
-pydantic-core==2.41.1
+pydantic==2.12.2
+pydantic-core==2.41.4
 pydantic-settings==2.11.0
 pyflakes==3.4.0
 pygments==2.19.2

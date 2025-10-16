@@ -14,7 +14,7 @@ charset-normalizer==3.4.4
 click==8.3.0
 colorama==0.4.6
 coverage==7.11.0
-cryptography==46.0.2
+cryptography==46.0.3
 cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
 defusedxml==0.7.1
@@ -42,7 +42,7 @@ langchain==0.3.27
 langchain-community==0.3.31
 langchain-core==0.3.79
 langchain-text-splitters==0.3.11
-langsmith==0.4.36
+langsmith==0.4.37
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3
@@ -55,7 +55,7 @@ multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.14.1
 numpy==2.3.4
-openai==2.3.0
+openai==2.4.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.3
 packageurl-python==0.17.5

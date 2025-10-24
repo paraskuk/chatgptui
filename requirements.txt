@@ -1,6 +1,7 @@
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.1
 aiosignal==1.4.0
+annotated-doc==0.0.3
 annotated-types==0.7.0
 anyio==4.11.0
 async-timeout==5.0.1
@@ -21,7 +22,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.119.1
+fastapi==0.120.0
 filelock==3.20.0
 flake8==7.3.0
 frozenlist==1.8.0
@@ -38,16 +39,16 @@ jinja2==3.1.6
 jiter==0.11.1
 jsonpatch==1.33
 jsonpointer==3.0.0
-langchain==1.0.1
+langchain==1.0.2
 langchain-classic==1.0.0
 langchain-community==0.4
-langchain-core==1.0.0
+langchain-core==1.0.1
 langchain-text-splitters==1.0.0
 langgraph==1.0.1
 langgraph-checkpoint==3.0.0
 langgraph-prebuilt==1.0.1
 langgraph-sdk==0.2.9
-langsmith==0.4.37
+langsmith==0.4.38
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3
@@ -60,9 +61,9 @@ multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.14.1
 numpy==2.3.4
-openai==2.6.0
+openai==2.6.1
 openapi-schema-pydantic==1.2.4
-orjson==3.11.3
+orjson==3.11.4
 ormsgpack==1.11.0
 packageurl-python==0.17.5
 packaging==25.0
@@ -87,7 +88,7 @@ pytest-asyncio==1.2.0
 pytest-cov==7.0.0
 python-dotenv==1.1.1
 pyyaml==6.0.3
-redis==6.4.0
+redis==7.0.0
 requests==2.32.5
 requests-toolbelt==1.0.0
 rich==14.2.0

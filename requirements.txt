@@ -48,7 +48,7 @@ langgraph==1.0.2
 langgraph-checkpoint==3.0.0
 langgraph-prebuilt==1.0.2
 langgraph-sdk==0.2.9
-langsmith==0.4.39
+langsmith==0.4.40
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3
@@ -61,10 +61,10 @@ multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.14.1
 numpy==2.3.4
-openai==2.6.1
+openai==2.7.1
 openapi-schema-pydantic==1.2.4
 orjson==3.11.4
-ormsgpack==1.11.0
+ormsgpack==1.12.0
 packageurl-python==0.17.5
 packaging==25.0
 pip==25.3

@@ -14,7 +14,7 @@ cffi==2.0.0
 charset-normalizer==3.4.4
 click==8.3.0
 colorama==0.4.6
-coverage==7.11.1
+coverage==7.11.2
 cryptography==46.0.3
 cyclonedx-python-lib==9.1.0
 dataclasses-json==0.6.7
@@ -22,7 +22,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.121.0
+fastapi==0.121.1
 filelock==3.20.0
 flake8==7.3.0
 frozenlist==1.8.0
@@ -48,7 +48,7 @@ langgraph==1.0.2
 langgraph-checkpoint==3.0.1
 langgraph-prebuilt==1.0.2
 langgraph-sdk==0.2.9
-langsmith==0.4.41
+langsmith==0.4.42
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3

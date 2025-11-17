@@ -12,7 +12,7 @@ cachecontrol==0.14.4
 certifi==2025.11.12
 cffi==2.0.0
 charset-normalizer==3.4.4
-click==8.3.0
+click==8.3.1
 colorama==0.4.6
 coverage==7.11.3
 cryptography==46.0.3
@@ -60,7 +60,7 @@ msgpack==1.1.2
 multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.14.1
-numpy==2.3.4
+numpy==2.3.5
 openai==2.8.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.4

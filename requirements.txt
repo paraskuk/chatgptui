@@ -42,13 +42,13 @@ jsonpointer==3.0.0
 langchain==1.0.8
 langchain-classic==1.0.0
 langchain-community==0.4.1
-langchain-core==1.0.7
+langchain-core==1.1.0
 langchain-text-splitters==1.0.0
 langgraph==1.0.3
 langgraph-checkpoint==3.0.1
 langgraph-prebuilt==1.0.5
 langgraph-sdk==0.2.9
-langsmith==0.4.44
+langsmith==0.4.46
 license-expression==30.4.4
 markdown-it-py==4.0.0
 markupsafe==3.0.3

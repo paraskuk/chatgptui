@@ -22,7 +22,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dnspython==2.8.0
 email-validator==2.3.0
-fastapi==0.124.4
+fastapi==0.126.0
 filelock==3.20.1
 flake8==7.3.0
 frozenlist==1.8.0
@@ -42,12 +42,12 @@ jsonpointer==3.0.0
 langchain==1.2.0
 langchain-classic==1.0.0
 langchain-community==0.4.1
-langchain-core==1.2.2
+langchain-core==1.2.4
 langchain-text-splitters==1.1.0
 langgraph==1.0.5
 langgraph-checkpoint==3.0.1
 langgraph-prebuilt==1.0.5
-langgraph-sdk==0.3.0
+langgraph-sdk==0.3.1
 langsmith==0.5.0
 license-expression==30.4.4
 markdown-it-py==4.0.0
@@ -60,8 +60,8 @@ msgpack==1.1.2
 multidict==6.7.0
 mypy-extensions==1.1.0
 numexpr==2.14.1
-numpy==2.3.5
-openai==2.13.0
+numpy==2.4.0
+openai==2.14.0
 openapi-schema-pydantic==1.2.4
 orjson==3.11.5
 ormsgpack==1.12.1

@@ -67,7 +67,7 @@ orjson==3.11.5
 ormsgpack==1.12.1
 packageurl-python==0.17.6
 packaging==25.0
-pip==25.3
+pip==26.0
 pip-api==0.0.34
 pip-audit==2.10.0
 pip-requirements-parser==32.0.1
